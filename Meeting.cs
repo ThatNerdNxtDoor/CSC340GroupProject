@@ -18,6 +18,7 @@ namespace CSC340GroupProject
 
         public static Employee currentEmployee;
 
+        //Constructor
         public Meeting(String t, TimeSpan st, TimeSpan et, DateTime d, String l, String ds) {
             title = t;
             startTime = st;
@@ -59,6 +60,11 @@ namespace CSC340GroupProject
         public String getDescription()
         {
             return description;
+        }
+
+        public static void logOut()
+        {
+            currentEmployee = null;
         }
     }
 }
