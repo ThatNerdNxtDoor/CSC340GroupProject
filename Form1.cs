@@ -9,9 +9,17 @@ namespace CSC340GroupProject
 
         private void button1_Click(object sender, EventArgs e)
         {
-            label4.Visible = true;
-            new Form2().Show();
-            this.Hide();
+            if (Employee.validateIdentification(textBox1.Text.ToString(), textBox2.Text.ToString()))
+            {
+                //Make login form dissappear
+                this.Hide();
+                //Make main menu form visible
+                new Form2().Show();
+            }
+            else
+            {
+                label4.Visible = true;
+            }
         }
 
         private void label4_Click(object sender, EventArgs e)
