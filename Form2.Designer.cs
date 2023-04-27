@@ -118,6 +118,7 @@
             monthCalendar1.Location = new Point(18, 18);
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 9;
+            monthCalendar1.DateChanged += monthCalendar1_DateChanged;
             // 
             // panel1
             // 
@@ -125,7 +126,7 @@
             panel1.Controls.Add(button9);
             panel1.Controls.Add(button8);
             panel1.Controls.Add(label2);
-            panel1.Location = new Point(612, 12);
+            panel1.Location = new Point(609, 12);
             panel1.Name = "panel1";
             panel1.Size = new Size(161, 161);
             panel1.TabIndex = 10;
@@ -233,6 +234,7 @@
             button13.TabIndex = 1;
             button13.Text = "Yes";
             button13.UseVisualStyleBackColor = false;
+            button13.Click += button13_Click;
             // 
             // label5
             // 
@@ -368,8 +370,8 @@
             Controls.Add(panel2);
             Controls.Add(panel3);
             Controls.Add(label3);
-            Controls.Add(listBox2);
             Controls.Add(panel1);
+            Controls.Add(listBox2);
             Controls.Add(monthCalendar1);
             Controls.Add(button6);
             Controls.Add(button4);

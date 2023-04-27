@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf.Collections;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -42,22 +43,22 @@ namespace CSC340GroupProject
             new Form4().Show();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void button4_Click(object sender, EventArgs e) //Log Out
         {
             panel1.Visible = true;
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void button8_Click(object sender, EventArgs e) //Confirm Log Out
         {
 
         }
 
-        private void button9_Click(object sender, EventArgs e)
+        private void button9_Click(object sender, EventArgs e) //Cancel Log Out
         {
             panel1.Visible = false;
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void button6_Click(object sender, EventArgs e) //Cancel Meeting
         {
             panel3.Visible = true;
         }
@@ -72,20 +73,34 @@ namespace CSC340GroupProject
 
         }
 
-        private void button12_Click(object sender, EventArgs e)
+        private void button12_Click(object sender, EventArgs e) //Cancel Delete
         {
             panel3.Visible = false;
         }
 
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e) //Select meeting
         {
-            panel2.Visible = true;
-            label1.Text = "Group Project";
-            textBox5.Text = "3/8/2023";
-            textBox1.Text = "3:30 PM";
-            textBox2.Text = "4:30 PM";
-            textBox3.Text = "2";
-            textBox4.Text = "Emily Ford, John Kelley";
+            selectedEvent = (Meeting)mList[listBox2.SelectedIndex];
+
+            textBox1.Text = selectedEvent.getTitle();
+            textBox2.Text = selectedEvent.getStartTime();
+            textBox3.Text = selectedEvent.getEndTime();
+            textBox4.Text = selectedEvent.getLocation();
+            textBox5.Text = selectedEvent.getDescription();
+        }
+
+        private void button13_Click(object sender, EventArgs e) //Confirm Delete
+        {
+            mList = Meeting.retrieveExistingMeetings(thisDate);
+            Meeting.displayMeetings(mList, listBox2);
+        }
+
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e) //Change Date
+        {
+            selectedDate = monthCalendar1.SelectionRange.Start;
+            thisDate = selectedDate.ToString("yyyy-MM-dd");
+            mList = Meeting.retrieveExistingMeetings(thisDate);
+            Meeting.displayMeetings(mList, listBox2);
         }
     }
 }
