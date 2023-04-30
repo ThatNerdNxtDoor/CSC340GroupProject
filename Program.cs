@@ -1,3 +1,7 @@
+using System;
+using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
+
 namespace CSC340GroupProject
 {
     internal static class Program
