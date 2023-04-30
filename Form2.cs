@@ -31,6 +31,8 @@ namespace CSC340GroupProject
         private void button1_Click(object sender, EventArgs e) //Create new meeting
         {
             new Form3().Show();
+            
+            
         }
 
         private void button3_Click(object sender, EventArgs e) //Check room availibility
@@ -61,6 +63,7 @@ namespace CSC340GroupProject
         private void button6_Click(object sender, EventArgs e) //Cancel Meeting
         {
             panel3.Visible = true;
+            
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -93,6 +96,8 @@ namespace CSC340GroupProject
         {
             mList = Meeting.retrieveExistingMeetings(thisDate);
             Meeting.displayMeetings(mList, listBox2);
+            Meeting delete = new Meeting();
+            delete.deleteMeeting();
         }
 
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e) //Change Date
