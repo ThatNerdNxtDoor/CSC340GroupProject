@@ -73,13 +73,31 @@ namespace CSC340GroupProject
             MySqlConnection conn = new MySqlConnection(connStr);
             try
             {
+                string sql;
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
+                MySqlCommand cmd;
                 ////////////////ToDo: Redo SQL statement
-                string sql = "SELECT * FROM thompsonisaiahevent WHERE date=@myDate AND employeeID=@emp ORDER BY startTime ASC";
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@myDate", dateString);
-                cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
+                switch (currentEmployee.getName()) {
+                    case "Isaiah Thompson":
+                        sql = "SELECT * FROM isaiahthompsonhevent WHERE date=@myDate AND employeeID=@emp ORDER BY startTime ASC";
+                        cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@myDate", dateString);
+                        cmd.Parameters.AddWithValue("@emp", 1);
+                        break;
+                    case "John Kelley": //John will put his respective SQL statement here.
+                        sql = "";
+                        cmd = new MySqlCommand(sql, conn);
+                        break;
+                    case "Emily Ford": //Emily will put her respective SQL statement here.
+                        sql = "";
+                        cmd = new MySqlCommand(sql, conn);
+                        break;
+                    default: //Default
+                        sql = "";
+                        cmd = new MySqlCommand(sql, conn);
+                        break;
+                }
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(cmd);
                 myAdapter.Fill(myTable); //Executes the command
                 Console.WriteLine("Table is ready.");
@@ -105,7 +123,8 @@ namespace CSC340GroupProject
         }
 
         //Create a new meeting in the database
-        public static void createMeeting(string t, string st, string et, string d, string l, string ds)
+        //returns bool to see if the creation was successful
+        public static bool createMeeting(string t, string st, string et, string d, string l, string ds)
         {
             string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
             MySqlConnection conn = new MySqlConnection(connStr);
@@ -113,8 +132,8 @@ namespace CSC340GroupProject
             {
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
-                ////////////////Todo: Redo SQL statement and check for employee and room times
-                string sql = "INSERT INTO thompsonisaiahevent (employeeID, title, startTime, endTime, date, location, description) VALUES (@emp, @t, @st, @et, @d, @l, @ds)";
+                ////////////////Todo: Redo SQL statement
+                string sql = "INSERT INTO ford_kelley_thompson_meetings (employeeID, title, startTime, endTime, date, location, description) VALUES (@emp, @t, @st, @et, @d, @l, @ds)";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
                 cmd.Parameters.AddWithValue("@t", t);
@@ -130,15 +149,18 @@ namespace CSC340GroupProject
                 else
                 {
                     Console.WriteLine("INSERT statement failed");
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                return false;
             }
             conn.Close();
             //After adding the new meetoing, it refreshes the meeting list
             retrieveExistingMeetings(d);
+            return true;
         }
 
         public void deleteMeeting()
@@ -150,7 +172,7 @@ namespace CSC340GroupProject
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 ////////////////Todo: Redo SQL statement 
-                string sql = "DELETE FROM thompsonisaiahevent WHERE employeeID=@emp AND date=@myDate AND title=@t LIMIT 1";
+                string sql = "DELETE FROM ford_kelley_thompson_meetings WHERE employeeID=@emp AND date=@myDate AND title=@t LIMIT 1";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
                 cmd.Parameters.AddWithValue("@myDate", DateTime.Parse(this.getDate()));
@@ -173,46 +195,6 @@ namespace CSC340GroupProject
             retrieveExistingMeetings(this.getDate());
         }
 
-        //Changes a specific meeting
-        public void saveMeetingEdit(string t, string st, string et, string d, string l, string ds)
-        {
-            string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
-            MySqlConnection conn = new MySqlConnection(connStr);
-            try
-            {
-                Console.WriteLine("Connecting to MySQL...");
-                conn.Open();
-                ////////////////Todo: Redo SQL statement
-                string sql = "UPDATE thompsonisaiahevent SET title=@t, startTime=@st, endTime=@et, date=@d, location=@l, description=@ds WHERE employeeID=@emp AND date=@oldDate AND title=@ot LIMIT 1";
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
-                cmd.Parameters.AddWithValue("@t", t);
-                cmd.Parameters.AddWithValue("@st", TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null));
-                cmd.Parameters.AddWithValue("@et", TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null));
-                cmd.Parameters.AddWithValue("@d", DateTime.Parse(d));
-                cmd.Parameters.AddWithValue("@l", l);
-                cmd.Parameters.AddWithValue("@ds", ds);
-
-                cmd.Parameters.AddWithValue("@ot", this.getTitle());
-                cmd.Parameters.AddWithValue("@oldDate", DateTime.Parse(this.getDate()));
-                if (cmd.ExecuteNonQuery() > 0) //Executes the command
-                {
-                    Console.WriteLine("UPDATE statement successful");
-                }
-                else
-                {
-                    Console.WriteLine("UPDATE statement failed");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            conn.Close();
-            //After editing the meeting, it refreshes the meeting list
-            retrieveExistingMeetings(this.getDate());
-        }
-
         //Put the list of meetings into the specified listBox
         public static void displayMeetings(ArrayList mList, ListBox meetingList)
         {
@@ -223,6 +205,31 @@ namespace CSC340GroupProject
                 String aString = currentMeeting.getTitle();
                 meetingList.Items.Add(aString);
             }
+        }
+
+        public bool checkEmployeeAvailability(Employee employee, string st, string et, string date) {
+            //Gets a list of possible conflicting meeting to compare
+            ArrayList meetingList = retrieveExistingMeetings(date);
+            foreach (Meeting m in meetingList)
+            {
+                TimeSpan mStart = TimeSpan.ParseExact(m.getStartTime(), "hh\\:mm\\:ss", null);
+                TimeSpan mEnd = TimeSpan.ParseExact(m.getEndTime(), "hh\\:mm\\:ss", null);
+
+                //Compare the times of each meeting to the new one and return false if there is an overlap
+                if ((TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) > mStart && TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) < mEnd)
+                    || (TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null) > mStart && TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null) < mEnd)
+                    || (mStart > TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) && mStart < TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null))
+                    || (mEnd > TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) && mEnd < TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null)))
+                {
+                    return false;
+                }
+            }
+            //If there was no time conflict, return true
+            return true;
+        }
+        
+        public void checkRoomAvailability(Room room, TimeSpan st, TimeSpan et) {
+            
         }
 
         public static void logOut()

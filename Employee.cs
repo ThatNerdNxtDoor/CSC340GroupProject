@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,7 +46,7 @@ namespace CSC340GroupProject
             {
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
-                string sql = "SELECT * FROM thompsonisaiahhemployee WHERE username=@name AND password=@passd"; ////////////CHANGE THIS TO ACCOMODATE FOR EVERYONE
+                string sql = "SELECT * FROM ford_kelley_thompson_employee WHERE username=@name AND password=@passd";
                 MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@name", username);
@@ -74,5 +75,28 @@ namespace CSC340GroupProject
             Console.WriteLine("Done.");
             return true;
         }
+
+        public bool checkEmployeeAvailability(Employee employee, string st, string et, string date)
+        {
+            //Gets a list of possible conflicting meeting to compare
+            ArrayList meetingList = Meeting.retrieveExistingMeetings(date);
+            foreach (Meeting m in meetingList)
+            {
+                TimeSpan mStart = TimeSpan.ParseExact(m.getStartTime(), "hh\\:mm\\:ss", null);
+                TimeSpan mEnd = TimeSpan.ParseExact(m.getEndTime(), "hh\\:mm\\:ss", null);
+
+                //Compare the times of each meeting to the new one and return false if there is an overlap
+                if ((TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) > mStart && TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) < mEnd)
+                    || (TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null) > mStart && TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null) < mEnd)
+                    || (mStart > TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) && mStart < TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null))
+                    || (mEnd > TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) && mEnd < TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null)))
+                {
+                    return false;
+                }
+            }
+            //If there was no time conflict, return true
+            return true;
+        }
+
     }
 }
