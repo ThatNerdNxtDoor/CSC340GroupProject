@@ -45,7 +45,7 @@ namespace CSC340GroupProject
             {
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
-                string sql = "SELECT * FROM thompsonisaiahhemployee WHERE username=@name AND password=@passd"; //CHANGE THIS TO ACCOMODATE FOR EVERYONE
+                string sql = "SELECT * FROM thompsonisaiahhemployee WHERE username=@name AND password=@passd"; ////////////CHANGE THIS TO ACCOMODATE FOR EVERYONE
                 MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@name", username);
