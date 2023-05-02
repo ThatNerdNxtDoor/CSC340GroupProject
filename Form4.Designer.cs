@@ -31,7 +31,6 @@
             monthCalendar1 = new MonthCalendar();
             listBox1 = new ListBox();
             panel1 = new Panel();
-            vScrollBar1 = new VScrollBar();
             tableLayoutPanel1 = new TableLayoutPanel();
             label38 = new Label();
             label37 = new Label();
@@ -95,32 +94,23 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(vScrollBar1);
             panel1.Controls.Add(tableLayoutPanel1);
             panel1.Location = new Point(257, 18);
             panel1.Name = "panel1";
             panel1.Size = new Size(272, 403);
             panel1.TabIndex = 2;
             panel1.Visible = false;
-            panel1.Paint += panel1_Paint;
-            // 
-            // vScrollBar1
-            // 
-            vScrollBar1.Location = new Point(251, 4);
-            vScrollBar1.Name = "vScrollBar1";
-            vScrollBar1.Size = new Size(21, 397);
-            vScrollBar1.TabIndex = 1;
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.AutoScroll = true;
+            tableLayoutPanel1.AutoScrollMargin = new Size(10, 500);
+            tableLayoutPanel1.AutoScrollMinSize = new Size(10, 500);
+            tableLayoutPanel1.AutoSize = true;
             tableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 29.91803F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70.08197F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100F));
             tableLayoutPanel1.Controls.Add(label38, 1, 18);
             tableLayoutPanel1.Controls.Add(label37, 1, 17);
             tableLayoutPanel1.Controls.Add(label36, 1, 16);
@@ -161,9 +151,7 @@
             tableLayoutPanel1.Controls.Add(label20, 1, 0);
             tableLayoutPanel1.Location = new Point(3, 3);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 19;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowCount = 32;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
@@ -182,14 +170,28 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(245, 397);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.Size = new Size(266, 673);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // label38
             // 
             label38.AutoSize = true;
             label38.ForeColor = Color.Red;
-            label38.Location = new Point(77, 375);
+            label38.Location = new Point(105, 379);
             label38.Name = "label38";
             label38.Size = new Size(68, 15);
             label38.TabIndex = 37;
@@ -199,7 +201,7 @@
             // 
             label37.AutoSize = true;
             label37.ForeColor = Color.Red;
-            label37.Location = new Point(77, 354);
+            label37.Location = new Point(105, 358);
             label37.Name = "label37";
             label37.Size = new Size(68, 15);
             label37.TabIndex = 36;
@@ -209,7 +211,7 @@
             // 
             label36.AutoSize = true;
             label36.ForeColor = Color.DarkGreen;
-            label36.Location = new Point(77, 333);
+            label36.Location = new Point(105, 337);
             label36.Name = "label36";
             label36.Size = new Size(55, 15);
             label36.TabIndex = 35;
@@ -219,7 +221,7 @@
             // 
             label35.AutoSize = true;
             label35.ForeColor = Color.DarkGreen;
-            label35.Location = new Point(77, 312);
+            label35.Location = new Point(105, 316);
             label35.Name = "label35";
             label35.Size = new Size(55, 15);
             label35.TabIndex = 34;
@@ -229,7 +231,7 @@
             // 
             label34.AutoSize = true;
             label34.ForeColor = Color.DarkGreen;
-            label34.Location = new Point(77, 291);
+            label34.Location = new Point(105, 295);
             label34.Name = "label34";
             label34.Size = new Size(55, 15);
             label34.TabIndex = 33;
@@ -239,7 +241,7 @@
             // 
             label33.AutoSize = true;
             label33.ForeColor = Color.DarkGreen;
-            label33.Location = new Point(77, 270);
+            label33.Location = new Point(105, 274);
             label33.Name = "label33";
             label33.Size = new Size(55, 15);
             label33.TabIndex = 32;
@@ -249,7 +251,7 @@
             // 
             label32.AutoSize = true;
             label32.ForeColor = Color.DarkGreen;
-            label32.Location = new Point(77, 249);
+            label32.Location = new Point(105, 253);
             label32.Name = "label32";
             label32.Size = new Size(55, 15);
             label32.TabIndex = 31;
@@ -259,7 +261,7 @@
             // 
             label31.AutoSize = true;
             label31.ForeColor = Color.DarkGreen;
-            label31.Location = new Point(77, 228);
+            label31.Location = new Point(105, 232);
             label31.Name = "label31";
             label31.Size = new Size(55, 15);
             label31.TabIndex = 30;
@@ -269,7 +271,7 @@
             // 
             label30.AutoSize = true;
             label30.ForeColor = Color.DarkGreen;
-            label30.Location = new Point(77, 207);
+            label30.Location = new Point(105, 211);
             label30.Name = "label30";
             label30.Size = new Size(55, 15);
             label30.TabIndex = 29;
@@ -279,7 +281,7 @@
             // 
             label29.AutoSize = true;
             label29.ForeColor = Color.Red;
-            label29.Location = new Point(77, 186);
+            label29.Location = new Point(105, 190);
             label29.Name = "label29";
             label29.Size = new Size(68, 15);
             label29.TabIndex = 28;
@@ -289,7 +291,7 @@
             // 
             label28.AutoSize = true;
             label28.ForeColor = Color.Red;
-            label28.Location = new Point(77, 165);
+            label28.Location = new Point(105, 169);
             label28.Name = "label28";
             label28.Size = new Size(68, 15);
             label28.TabIndex = 27;
@@ -299,7 +301,7 @@
             // 
             label27.AutoSize = true;
             label27.ForeColor = Color.Red;
-            label27.Location = new Point(77, 144);
+            label27.Location = new Point(105, 148);
             label27.Name = "label27";
             label27.Size = new Size(68, 15);
             label27.TabIndex = 26;
@@ -309,7 +311,7 @@
             // 
             label26.AutoSize = true;
             label26.ForeColor = Color.Red;
-            label26.Location = new Point(77, 123);
+            label26.Location = new Point(105, 127);
             label26.Name = "label26";
             label26.Size = new Size(68, 15);
             label26.TabIndex = 25;
@@ -319,7 +321,7 @@
             // 
             label25.AutoSize = true;
             label25.ForeColor = Color.Red;
-            label25.Location = new Point(77, 102);
+            label25.Location = new Point(105, 106);
             label25.Name = "label25";
             label25.Size = new Size(68, 15);
             label25.TabIndex = 24;
@@ -329,7 +331,7 @@
             // 
             label24.AutoSize = true;
             label24.ForeColor = Color.DarkGreen;
-            label24.Location = new Point(77, 81);
+            label24.Location = new Point(105, 85);
             label24.Name = "label24";
             label24.Size = new Size(55, 15);
             label24.TabIndex = 23;
@@ -339,7 +341,7 @@
             // 
             label23.AutoSize = true;
             label23.ForeColor = Color.DarkGreen;
-            label23.Location = new Point(77, 60);
+            label23.Location = new Point(105, 64);
             label23.Name = "label23";
             label23.Size = new Size(55, 15);
             label23.TabIndex = 22;
@@ -349,7 +351,7 @@
             // 
             label22.AutoSize = true;
             label22.ForeColor = Color.DarkGreen;
-            label22.Location = new Point(77, 39);
+            label22.Location = new Point(105, 43);
             label22.Name = "label22";
             label22.Size = new Size(55, 15);
             label22.TabIndex = 21;
@@ -359,7 +361,7 @@
             // 
             label21.AutoSize = true;
             label21.ForeColor = Color.DarkGreen;
-            label21.Location = new Point(77, 20);
+            label21.Location = new Point(105, 22);
             label21.Name = "label21";
             label21.Size = new Size(55, 15);
             label21.TabIndex = 20;
@@ -376,7 +378,7 @@
             // 
             // label2
             // 
-            label2.Location = new Point(4, 20);
+            label2.Location = new Point(4, 22);
             label2.Name = "label2";
             label2.Size = new Size(56, 15);
             label2.TabIndex = 1;
@@ -385,7 +387,7 @@
             // 
             // label3
             // 
-            label3.Location = new Point(4, 39);
+            label3.Location = new Point(4, 43);
             label3.Name = "label3";
             label3.Size = new Size(56, 15);
             label3.TabIndex = 2;
@@ -394,7 +396,7 @@
             // 
             // label4
             // 
-            label4.Location = new Point(4, 60);
+            label4.Location = new Point(4, 64);
             label4.Name = "label4";
             label4.Size = new Size(56, 15);
             label4.TabIndex = 3;
@@ -403,7 +405,7 @@
             // 
             // label5
             // 
-            label5.Location = new Point(4, 81);
+            label5.Location = new Point(4, 85);
             label5.Name = "label5";
             label5.Size = new Size(56, 15);
             label5.TabIndex = 4;
@@ -412,7 +414,7 @@
             // 
             // label6
             // 
-            label6.Location = new Point(4, 102);
+            label6.Location = new Point(4, 106);
             label6.Name = "label6";
             label6.Size = new Size(56, 15);
             label6.TabIndex = 5;
@@ -421,7 +423,7 @@
             // 
             // label7
             // 
-            label7.Location = new Point(4, 123);
+            label7.Location = new Point(4, 127);
             label7.Name = "label7";
             label7.Size = new Size(56, 15);
             label7.TabIndex = 6;
@@ -430,7 +432,7 @@
             // 
             // label8
             // 
-            label8.Location = new Point(4, 144);
+            label8.Location = new Point(4, 148);
             label8.Name = "label8";
             label8.Size = new Size(56, 15);
             label8.TabIndex = 7;
@@ -439,7 +441,7 @@
             // 
             // label9
             // 
-            label9.Location = new Point(4, 165);
+            label9.Location = new Point(4, 169);
             label9.Name = "label9";
             label9.Size = new Size(55, 15);
             label9.TabIndex = 8;
@@ -448,7 +450,7 @@
             // 
             // label10
             // 
-            label10.Location = new Point(4, 186);
+            label10.Location = new Point(4, 190);
             label10.Name = "label10";
             label10.Size = new Size(55, 15);
             label10.TabIndex = 9;
@@ -457,7 +459,7 @@
             // 
             // label11
             // 
-            label11.Location = new Point(4, 207);
+            label11.Location = new Point(4, 211);
             label11.Name = "label11";
             label11.Size = new Size(55, 15);
             label11.TabIndex = 10;
@@ -466,7 +468,7 @@
             // 
             // label12
             // 
-            label12.Location = new Point(4, 228);
+            label12.Location = new Point(4, 232);
             label12.Name = "label12";
             label12.Size = new Size(55, 15);
             label12.TabIndex = 11;
@@ -475,7 +477,7 @@
             // 
             // label13
             // 
-            label13.Location = new Point(4, 249);
+            label13.Location = new Point(4, 253);
             label13.Name = "label13";
             label13.Size = new Size(55, 15);
             label13.TabIndex = 12;
@@ -484,7 +486,7 @@
             // 
             // label14
             // 
-            label14.Location = new Point(4, 270);
+            label14.Location = new Point(4, 274);
             label14.Name = "label14";
             label14.Size = new Size(49, 15);
             label14.TabIndex = 13;
@@ -493,7 +495,7 @@
             // 
             // label15
             // 
-            label15.Location = new Point(4, 291);
+            label15.Location = new Point(4, 295);
             label15.Name = "label15";
             label15.Size = new Size(49, 15);
             label15.TabIndex = 14;
@@ -502,7 +504,7 @@
             // 
             // label16
             // 
-            label16.Location = new Point(4, 312);
+            label16.Location = new Point(4, 316);
             label16.Name = "label16";
             label16.Size = new Size(49, 15);
             label16.TabIndex = 15;
@@ -511,7 +513,7 @@
             // 
             // label17
             // 
-            label17.Location = new Point(4, 333);
+            label17.Location = new Point(4, 337);
             label17.Name = "label17";
             label17.Size = new Size(49, 15);
             label17.TabIndex = 16;
@@ -520,7 +522,7 @@
             // 
             // label18
             // 
-            label18.Location = new Point(4, 354);
+            label18.Location = new Point(4, 358);
             label18.Name = "label18";
             label18.Size = new Size(49, 15);
             label18.TabIndex = 17;
@@ -529,7 +531,7 @@
             // 
             // label19
             // 
-            label19.Location = new Point(4, 375);
+            label19.Location = new Point(4, 379);
             label19.Name = "label19";
             label19.Size = new Size(49, 15);
             label19.TabIndex = 18;
@@ -540,7 +542,7 @@
             // 
             label20.AutoSize = true;
             label20.ForeColor = Color.DarkGreen;
-            label20.Location = new Point(77, 1);
+            label20.Location = new Point(105, 1);
             label20.Name = "label20";
             label20.Size = new Size(55, 15);
             label20.TabIndex = 19;
@@ -557,6 +559,7 @@
             Name = "Form4";
             Text = "Employee Times";
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);
@@ -568,7 +571,6 @@
         private ListBox listBox1;
         private Panel panel1;
         private TableLayoutPanel tableLayoutPanel1;
-        private VScrollBar vScrollBar1;
         private Label label1;
         private Label label9;
         private Label label2;

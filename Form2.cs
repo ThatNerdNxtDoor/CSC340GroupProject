@@ -24,8 +24,7 @@ namespace CSC340GroupProject
             InitializeComponent();
             selectedDate = DateTime.Today;
 
-            listBox2.Items.Add("Group Project");
-            listBox2.Items.Add("Meet With Dr. Chang");
+            Meeting.retrieveExistingMeetings(thisDate);
         }
 
         private void button1_Click(object sender, EventArgs e) //Create new meeting

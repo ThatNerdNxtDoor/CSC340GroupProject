@@ -11,6 +11,7 @@ namespace CSC340GroupProject
 {
     internal class Meeting
     {
+        string host; //Username of host of meeting
         string title;
         TimeSpan startTime; //These two should only be the time
         TimeSpan endTime;
@@ -64,6 +65,8 @@ namespace CSC340GroupProject
             return description;
         }
 
+        //Retrieves meetings
+        //
         public static ArrayList retrieveExistingMeetings(string dateString)
         {
             ArrayList meetingList = new ArrayList();  //a list to save the meetings
@@ -81,6 +84,66 @@ namespace CSC340GroupProject
                 switch (currentEmployee.getName()) {
                     case "Isaiah Thompson":
                         sql = "SELECT * FROM isaiahthompsonhevent WHERE date=@myDate AND employeeID=@emp ORDER BY startTime ASC";
+                        cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@myDate", dateString);
+                        cmd.Parameters.AddWithValue("@emp", 1);
+                        break;
+                    case "John Kelley": //John will put his respective SQL statement here.
+                        sql = "";
+                        cmd = new MySqlCommand(sql, conn);
+                        break;
+                    case "Emily Ford": //Emily will put her respective SQL statement here.
+                        sql = "";
+                        cmd = new MySqlCommand(sql, conn);
+                        break;
+                    default: //Default
+                        sql = "";
+                        cmd = new MySqlCommand(sql, conn);
+                        break;
+                }
+                MySqlDataAdapter myAdapter = new MySqlDataAdapter(cmd);
+                myAdapter.Fill(myTable); //Executes the command
+                Console.WriteLine("Table is ready.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            //convert the retrieved data to meetings and save them to the list
+            foreach (DataRow row in myTable.Rows)
+            {
+                Meeting newMeeting = new Meeting();
+                newMeeting.host = row["host"].ToString();
+                newMeeting.title = row["title"].ToString();
+                newMeeting.date = DateTime.Parse(row["date"].ToString());
+                newMeeting.startTime = TimeSpan.ParseExact(row["startTime"].ToString(), "hh\\:mm\\:ss", null);
+                newMeeting.endTime = TimeSpan.ParseExact(row["endTime"].ToString(), "hh\\:mm\\:ss", null);
+                newMeeting.description = row["description"].ToString();
+                newMeeting.location = row["room"].ToString();
+                meetingList.Add(newMeeting);
+            }
+            return meetingList;  //return the meeting list
+        }
+        
+        //Overload version to apply for any employee
+        //Used for checking time availibility, so it directly checks every event in the individual databases.
+        public static ArrayList retrieveExistingMeetings(string dateString, Employee employee)
+        {
+            ArrayList meetingList = new ArrayList();  //a list to save the meetings
+            //prepare an SQL query to retrieve all the meetings on the same, specified date
+            DataTable myTable = new DataTable();
+            string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                string sql;
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                MySqlCommand cmd;
+                switch (employee.getName()) {
+                    case "Isaiah Thompson":
+                        sql = "SELECT * FROM thompsonisaiahevent WHERE date=@myDate AND employeeID=@emp ORDER BY startTime ASC";
                         cmd = new MySqlCommand(sql, conn);
                         cmd.Parameters.AddWithValue("@myDate", dateString);
                         cmd.Parameters.AddWithValue("@emp", 1);
@@ -205,31 +268,6 @@ namespace CSC340GroupProject
                 String aString = currentMeeting.getTitle();
                 meetingList.Items.Add(aString);
             }
-        }
-
-        public bool checkEmployeeAvailability(Employee employee, string st, string et, string date) {
-            //Gets a list of possible conflicting meeting to compare
-            ArrayList meetingList = retrieveExistingMeetings(date);
-            foreach (Meeting m in meetingList)
-            {
-                TimeSpan mStart = TimeSpan.ParseExact(m.getStartTime(), "hh\\:mm\\:ss", null);
-                TimeSpan mEnd = TimeSpan.ParseExact(m.getEndTime(), "hh\\:mm\\:ss", null);
-
-                //Compare the times of each meeting to the new one and return false if there is an overlap
-                if ((TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) > mStart && TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) < mEnd)
-                    || (TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null) > mStart && TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null) < mEnd)
-                    || (mStart > TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) && mStart < TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null))
-                    || (mEnd > TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null) && mEnd < TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null)))
-                {
-                    return false;
-                }
-            }
-            //If there was no time conflict, return true
-            return true;
-        }
-        
-        public void checkRoomAvailability(Room room, TimeSpan st, TimeSpan et) {
-            
         }
 
         public static void logOut()
