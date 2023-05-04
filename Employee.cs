@@ -83,7 +83,7 @@ namespace CSC340GroupProject
 
         public static ArrayList retrieveEmployeeList() {
             ArrayList eList = new ArrayList();
-            //prepare an SQL query to retrieve all the meetings on the same, specified date
+            //prepare an SQL query to retrieve all of the employees
             DataTable myTable = new DataTable();
             string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
             MySqlConnection conn = new MySqlConnection(connStr);

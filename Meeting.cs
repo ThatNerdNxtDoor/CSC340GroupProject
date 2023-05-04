@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
@@ -66,7 +67,7 @@ namespace CSC340GroupProject
         }
 
         //Retrieves meetings
-        //
+        //Used for displaying on the main page
         public static ArrayList retrieveExistingMeetings(string dateString)
         {
             ArrayList meetingList = new ArrayList();  //a list to save the meetings
@@ -141,6 +142,7 @@ namespace CSC340GroupProject
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 MySqlCommand cmd;
+                //Switch statement determines which employee is being checked and accessing their individual database
                 switch (employee.getName()) {
                     case "Isaiah Thompson":
                         sql = "SELECT * FROM thompsonisaiahevent WHERE date=@myDate AND employeeID=@emp ORDER BY startTime ASC";
@@ -185,18 +187,62 @@ namespace CSC340GroupProject
             return meetingList;  //return the meeting list
         }
 
+        //Overload version to retrieve events based on the room it is in
+        //Used for checking time availibility of rooms
+        public static ArrayList retrieveExistingMeetings(string dateString, int roomNum)
+        {
+            ArrayList meetingList = new ArrayList();  //a list to save the meetings
+            //prepare an SQL query to retrieve all the meetings on the same, specified date
+            DataTable myTable = new DataTable();
+            string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                string sql;
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                MySqlCommand cmd;
+                sql = "SELECT * FROM ford_kelley_thompson_meetings WHERE meetingDate=@myDate AND room=@rm ORDER BY startTime ASC";
+                cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@myDate", dateString);
+                cmd.Parameters.AddWithValue("@rm", roomNum); //Room's ID
+                MySqlDataAdapter myAdapter = new MySqlDataAdapter(cmd);
+                myAdapter.Fill(myTable); //Executes the command
+                Console.WriteLine("Table is ready.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            //convert the retrieved data to meetings and save them to the list
+            foreach (DataRow row in myTable.Rows)
+            {
+                Meeting newMeeting = new Meeting();
+                newMeeting.title = row["meetingTitle"].ToString();
+                newMeeting.date = DateTime.Parse(row["meetingDate"].ToString());
+                newMeeting.startTime = TimeSpan.ParseExact(row["startTime"].ToString(), "hh\\:mm\\:ss", null);
+                newMeeting.endTime = TimeSpan.ParseExact(row["endTime"].ToString(), "hh\\:mm\\:ss", null);
+                newMeeting.description = row["meetingDescription"].ToString();
+                newMeeting.location = row["room"].ToString();
+                meetingList.Add(newMeeting);
+            }
+            return meetingList;  //return the meeting list
+        }
+
         //Create a new meeting in the database
         //returns bool to see if the creation was successful
         public static bool createMeeting(string t, string st, string et, string d, string l, string ds)
         {
             string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
             MySqlConnection conn = new MySqlConnection(connStr);
+            //Get list of attending members.
             try
             {
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 ////////////////Todo: Redo SQL statement
-                string sql = "INSERT INTO ford_kelley_thompson_meetings (employeeID, title, startTime, endTime, date, location, description) VALUES (@emp, @t, @st, @et, @d, @l, @ds)";
+                string sql = "INSERT INTO ford_kelley_thompson_meetings (host, title, startTime, endTime, date, location, description) VALUES (@emp, @t, @st, @et, @d, @l, @ds)";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
                 cmd.Parameters.AddWithValue("@t", t);
@@ -226,6 +272,7 @@ namespace CSC340GroupProject
             return true;
         }
 
+        //Todo: Delete the meeting from every attending member's database
         public void deleteMeeting()
         {
             string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
