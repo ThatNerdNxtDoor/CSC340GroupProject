@@ -301,6 +301,7 @@ namespace CSC340GroupProject
         }
 
         //Todo: Delete the meeting from every attending member's database
+        //Determine if current employee is the ost of the meeting. If so, go forward with deletion, if not, stop
         public void deleteMeeting()
         {
             string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
