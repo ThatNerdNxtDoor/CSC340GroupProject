@@ -86,7 +86,7 @@ namespace CSC340GroupProject
                         cmd.Parameters.AddWithValue("@emp", 1);
                         break;
                     case "John Kelley": //John will put his respective SQL statement here.
-                        sql = "";
+                        sql = "SELECT * FROM kelleyevents WHERE event_day=@myDate AND employee_ID=@emp ORDER BY start_time ASC";
                         cmd = new MySqlCommand(sql, conn);
                         break;
                     case "Emily Ford": //Emily will put her respective SQL statement here.
