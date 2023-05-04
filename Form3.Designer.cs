@@ -43,6 +43,8 @@
             label6 = new Label();
             monthCalendar1 = new MonthCalendar();
             label7 = new Label();
+            label8 = new Label();
+            textBox6 = new TextBox();
             SuspendLayout();
             // 
             // button1
@@ -137,7 +139,7 @@
             textBox4.Location = new Point(12, 187);
             textBox4.Multiline = true;
             textBox4.Name = "textBox4";
-            textBox4.Size = new Size(309, 182);
+            textBox4.Size = new Size(309, 52);
             textBox4.TabIndex = 9;
             // 
             // label5
@@ -182,11 +184,31 @@
             label7.Text = "Date";
             label7.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // label8
+            // 
+            label8.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            label8.Location = new Point(12, 242);
+            label8.Name = "label8";
+            label8.Size = new Size(154, 34);
+            label8.TabIndex = 15;
+            label8.Text = "Description";
+            label8.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // textBox6
+            // 
+            textBox6.Location = new Point(12, 279);
+            textBox6.Multiline = true;
+            textBox6.Name = "textBox6";
+            textBox6.Size = new Size(309, 81);
+            textBox6.TabIndex = 16;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(575, 515);
+            Controls.Add(textBox6);
+            Controls.Add(label8);
             Controls.Add(label7);
             Controls.Add(monthCalendar1);
             Controls.Add(textBox5);
@@ -225,5 +247,7 @@
         private Label label6;
         private MonthCalendar monthCalendar1;
         private Label label7;
+        private Label label8;
+        private TextBox textBox6;
     }
 }
