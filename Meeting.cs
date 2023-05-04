@@ -92,6 +92,8 @@ namespace CSC340GroupProject
                     case "John Kelley": //John will put his respective SQL statement here.
                         sql = "SELECT * FROM kelleyevents WHERE event_day=@myDate AND employee_ID=@emp ORDER BY start_time ASC";
                         cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@myDate", dateString);
+                        cmd.Parameters.AddWithValue("@emp", 2);
                         break;
                     case "Emily Ford": //Emily will put her respective SQL statement here.
                         sql = "";
@@ -151,8 +153,10 @@ namespace CSC340GroupProject
                         cmd.Parameters.AddWithValue("@emp", 1);
                         break;
                     case "John Kelley": //John will put his respective SQL statement here.
-                        sql = "";
+                        sql = "SELECT * FROM kelleyevents WHERE event_day=@myDate AND employee_ID=@emp ORDER BY start_time ASC";
                         cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@myDate", dateString);
+                        cmd.Parameters.AddWithValue("@emp", 2);
                         break;
                     case "Emily Ford": //Emily will put her respective SQL statement here.
                         sql = "";
@@ -176,12 +180,32 @@ namespace CSC340GroupProject
             foreach (DataRow row in myTable.Rows)
             {
                 Meeting newMeeting = new Meeting();
-                newMeeting.title = row["title"].ToString();
-                newMeeting.date = DateTime.Parse(row["date"].ToString());
-                newMeeting.startTime = TimeSpan.ParseExact(row["startTime"].ToString(), "hh\\:mm\\:ss", null);
-                newMeeting.endTime = TimeSpan.ParseExact(row["endTime"].ToString(), "hh\\:mm\\:ss", null);
-                newMeeting.description = row["description"].ToString();
-                newMeeting.location = row["location"].ToString();
+                switch (employee.getName())
+                {
+                    case "Isaiah Thompson":
+                        newMeeting.title = row["title"].ToString();
+                        newMeeting.date = DateTime.Parse(row["date"].ToString());
+                        newMeeting.startTime = TimeSpan.ParseExact(row["startTime"].ToString(), "hh\\:mm\\:ss", null);
+                        newMeeting.endTime = TimeSpan.ParseExact(row["endTime"].ToString(), "hh\\:mm\\:ss", null);
+                        newMeeting.description = row["description"].ToString();
+                        newMeeting.location = row["location"].ToString();
+                        break;
+                    case "John Kelley":
+                        newMeeting.title = row["event_name"].ToString();
+                        newMeeting.date = DateTime.Parse(row["event_day"].ToString());
+                        newMeeting.startTime = TimeSpan.ParseExact(row["start_time"].ToString(), "hh\\:mm\\:ss", null);
+                        newMeeting.endTime = TimeSpan.ParseExact(row["end_time"].ToString(), "hh\\:mm\\:ss", null);
+                        newMeeting.description = row["description"].ToString();
+                        newMeeting.location = row["location"].ToString();
+                        break;
+                    case "Emily Ford":
+                        //Emi put your code here dungus
+                        break;
+
+                    default:
+                        break;
+                }
+                
                 meetingList.Add(newMeeting);
             }
             return meetingList;  //return the meeting list
