@@ -51,7 +51,9 @@ namespace CSC340GroupProject
 
         private void button8_Click(object sender, EventArgs e) //Confirm Log Out
         {
-
+            Meeting.logOut();
+            new Form1().Show();
+            this.Close();
         }
 
         private void button9_Click(object sender, EventArgs e) //Cancel Log Out

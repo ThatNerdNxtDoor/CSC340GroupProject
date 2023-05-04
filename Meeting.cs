@@ -261,7 +261,10 @@ namespace CSC340GroupProject
             string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
             MySqlConnection conn = new MySqlConnection(connStr);
             //Get list of attending members.
-            try
+            //  Get string list of all the names, then use [string name].Split(",")
+            //Then use the list of names to determine the attending members
+            //Then put the meeting into each attending member's indivual database.
+            try //This puts the meeting in the group databse 
             {
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
@@ -291,7 +294,8 @@ namespace CSC340GroupProject
                 return false;
             }
             conn.Close();
-            //After adding the new meetoing, it refreshes the meeting list
+            //Then add to the attending table, one for each attending member. Each one will be tied to the same meeting id, how to get that is in the link I'm sending to you on discord.
+            //After adding the new meeting, it refreshes the meeting list
             retrieveExistingMeetings(d);
             return true;
         }
