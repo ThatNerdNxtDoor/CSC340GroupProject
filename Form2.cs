@@ -15,7 +15,7 @@ namespace CSC340GroupProject
     public partial class Form2 : Form
     {
         ArrayList mList;
-        Meeting selectedEvent;
+        Meeting selectedMeeting;
         DateTime selectedDate;
         string thisDate;
 
@@ -64,7 +64,7 @@ namespace CSC340GroupProject
         private void button6_Click(object sender, EventArgs e) //Cancel Meeting
         {
             panel3.Visible = true;
-            
+            label5.Text = "Are you sure you want to delete this meeting?";
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -84,21 +84,26 @@ namespace CSC340GroupProject
 
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e) //Select meeting
         {
-            selectedEvent = (Meeting)mList[listBox2.SelectedIndex];
+            selectedMeeting = (Meeting)mList[listBox2.SelectedIndex];
 
-            textBox1.Text = selectedEvent.getTitle();
-            textBox2.Text = selectedEvent.getStartTime();
-            textBox3.Text = selectedEvent.getEndTime();
-            textBox4.Text = selectedEvent.getLocation();
-            textBox5.Text = selectedEvent.getDescription();
+            textBox1.Text = selectedMeeting.getTitle();
+            textBox2.Text = selectedMeeting.getStartTime();
+            textBox3.Text = selectedMeeting.getEndTime();
+            textBox4.Text = selectedMeeting.getLocation();
+            textBox5.Text = selectedMeeting.getDescription();
         }
 
         private void button13_Click(object sender, EventArgs e) //Confirm Delete
         {
+            if (selectedMeeting.deleteMeeting())
+            {
+                panel3.Visible = false;
+            }
+            else {
+                label5.Text = "Delete failed. You cannot delete a meeting you are not the host of.";
+            }
             mList = Meeting.retrieveExistingMeetings(thisDate);
             Meeting.displayMeetings(mList, listBox2);
-            Meeting delete = new Meeting();
-            delete.deleteMeeting();
         }
 
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e) //Change Date

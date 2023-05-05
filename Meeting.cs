@@ -6,12 +6,15 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Google.Protobuf;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Relational;
 
 namespace CSC340GroupProject
 {
     internal class Meeting
     {
+        int id;
         string host; //Username of host of meeting
         string title;
         TimeSpan startTime; //These two should only be the time
@@ -23,7 +26,8 @@ namespace CSC340GroupProject
         public static Employee currentEmployee;
 
         //Constructor
-        public Meeting(String t, TimeSpan st, TimeSpan et, DateTime d, String l, String ds) {
+        public Meeting(int ID, String t, TimeSpan st, TimeSpan et, DateTime d, String l, String ds) {
+            id = ID;
             title = t;
             startTime = st;
             endTime = et;
@@ -68,6 +72,7 @@ namespace CSC340GroupProject
 
         //Retrieves meetings
         //Used for displaying on the main page
+        //Meant for group Database
         public static ArrayList retrieveExistingMeetings(string dateString)
         {
             ArrayList meetingList = new ArrayList();  //a list to save the meetings
@@ -81,29 +86,10 @@ namespace CSC340GroupProject
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 MySqlCommand cmd;
-                ////////////////ToDo: Redo SQL statement
-                switch (currentEmployee.getName()) {
-                    case "Isaiah Thompson":
-                        sql = "SELECT * FROM isaiahthompsonhevent WHERE date=@myDate AND employeeID=@emp ORDER BY startTime ASC";
-                        cmd = new MySqlCommand(sql, conn);
-                        cmd.Parameters.AddWithValue("@myDate", dateString);
-                        cmd.Parameters.AddWithValue("@emp", 1);
-                        break;
-                    case "John Kelley": //John will put his respective SQL statement here.
-                        sql = "SELECT * FROM kelleyevents WHERE event_day=@myDate AND employee_ID=@emp ORDER BY start_time ASC";
-                        cmd = new MySqlCommand(sql, conn);
-                        cmd.Parameters.AddWithValue("@myDate", dateString);
-                        cmd.Parameters.AddWithValue("@emp", 2);
-                        break;
-                    case "Emily Ford": //Emily will put her respective SQL statement here.
-                        sql = "";
-                        cmd = new MySqlCommand(sql, conn);
-                        break;
-                    default: //Default
-                        sql = "";
-                        cmd = new MySqlCommand(sql, conn);
-                        break;
-                }
+                sql = "SELECT * FROM ford_kelley_thompson_meeting INNER JOIN ford_kelley_thompson_attending ON ford_kelley_thompson_meeting.id = ford_kelley_thompson_attending.meetingID WHERE ford_kelley_thompson_meeting.date=@myDate AND ford_kelley_thompson_attending.employeeID=@emp ORDER BY startTime ASC";
+                cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@myDate", dateString);
+                cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
                 MySqlDataAdapter myAdapter = new MySqlDataAdapter(cmd);
                 myAdapter.Fill(myTable); //Executes the command
                 Console.WriteLine("Table is ready.");
@@ -117,12 +103,13 @@ namespace CSC340GroupProject
             foreach (DataRow row in myTable.Rows)
             {
                 Meeting newMeeting = new Meeting();
+                newMeeting.id = int.Parse(row["id"].ToString());
                 newMeeting.host = row["host"].ToString();
-                newMeeting.title = row["title"].ToString();
-                newMeeting.date = DateTime.Parse(row["date"].ToString());
+                newMeeting.title = row["meetingTitle"].ToString();
+                newMeeting.date = DateTime.Parse(row["meetingDate"].ToString());
                 newMeeting.startTime = TimeSpan.ParseExact(row["startTime"].ToString(), "hh\\:mm\\:ss", null);
                 newMeeting.endTime = TimeSpan.ParseExact(row["endTime"].ToString(), "hh\\:mm\\:ss", null);
-                newMeeting.description = row["description"].ToString();
+                newMeeting.description = row["meetingDescription"].ToString();
                 newMeeting.location = row["room"].ToString();
                 meetingList.Add(newMeeting);
             }
@@ -264,7 +251,7 @@ namespace CSC340GroupProject
             //  Get string list of all the names, then use [string name].Split(",")
             //Then use the list of names to determine the attending members
             //Then put the meeting into each attending member's indivual database.
-            try //This puts the meeting in the group databse 
+            try //This puts the meeting in the group databse
             {
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
@@ -301,37 +288,143 @@ namespace CSC340GroupProject
         }
 
         //Todo: Delete the meeting from every attending member's database
-        //Determine if current employee is the ost of the meeting. If so, go forward with deletion, if not, stop
-        public void deleteMeeting()
+        //Determine if current employee is the host of the meeting. If so, go forward with deletion, if not, stop
+        public bool deleteMeeting()
         {
-            string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
-            MySqlConnection conn = new MySqlConnection(connStr);
-            try
+            if (this.host == currentEmployee.getUsername())
             {
-                Console.WriteLine("Connecting to MySQL...");
-                conn.Open();
-                ////////////////Todo: Redo SQL statement 
-                string sql = "DELETE FROM ford_kelley_thompson_meetings WHERE employeeID=@emp AND date=@myDate AND title=@t LIMIT 1";
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
-                cmd.Parameters.AddWithValue("@myDate", DateTime.Parse(this.getDate()));
-                cmd.Parameters.AddWithValue("@t", this.getTitle());
-                if (cmd.ExecuteNonQuery() > 0)
-                { //Executes the command
-                    Console.WriteLine("DELETE statement successful");
-                }
-                else
+                string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
+                MySqlConnection conn = new MySqlConnection(connStr);
+                //-------Delete from each attending individual's database-------
+                ArrayList attendants = new ArrayList();
+                DataTable myTable = new DataTable();
+                try
                 {
-                    Console.WriteLine("DELETE statement failed");
+                    string sql;
+                    Console.WriteLine("Connecting to MySQL...");
+                    conn.Open();
+                    MySqlCommand cmd;
+                    sql = "SELECT employeeID FROM ford_kelley_thompson_attending WHERE meetingID=@m ORDER BY startTime ASC";
+                    cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@m", this.id);
+                    MySqlDataAdapter myAdapter = new MySqlDataAdapter(cmd);
+                    myAdapter.Fill(myTable); //Executes the command
+                    Console.WriteLine("Table is ready.");
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    conn.Close();
+                    return false;
+                }
+                conn.Close();
+                foreach (DataRow row in myTable.Rows)
+                {
+                    string employee = row["employeeID"].ToString();
+                    attendants.Add(employee);
+                }
+                foreach (string emp in attendants)
+                {
+                    try
+                    {
+                        Console.WriteLine("Connecting to MySQL...");
+                        conn.Open();
+                        MySqlCommand cmd = new MySqlCommand();
+                        switch (emp) {
+                            case "isaiahthompson02": //Isaiah
+                                string sql = "DELETE FROM thompsonisaiahevent WHERE employeeID=@emp AND date=@myDate AND title=@t LIMIT 1";
+                                cmd = new MySqlCommand(sql, conn);
+                                cmd.Parameters.AddWithValue("@emp", 1);
+                                cmd.Parameters.AddWithValue("@myDate", DateTime.Parse(this.getDate()));
+                                cmd.Parameters.AddWithValue("@t", this.getTitle());
+                                break;
+                            case "": //John
+                                break;
+                            case " ": //Emily
+                                break;
+                            default:
+                                break;
+                        }
+                        if (cmd.ExecuteNonQuery() > 0)
+                        { //Executes the command
+                            Console.WriteLine("DELETE statement successful");
+                        }
+                        else
+                        {
+                            Console.WriteLine("DELETE statement failed");
+                            conn.Close();
+                            return false;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                        conn.Close();
+                        return false;
+                    }
+                    conn.Close();
+                }
+                //-------Delete all attending instances-------
+                try
+                {
+                    Console.WriteLine("Connecting to MySQL...");
+                    conn.Open();
+                    string sql = "DELETE FROM ford_kelley_thompson_attending WHERE meetingID=@m";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@m", this.id);
+                    if (cmd.ExecuteNonQuery() > 0)
+                    { //Executes the command
+                        Console.WriteLine("DELETE statement successful");
+                    }
+                    else
+                    {
+                        Console.WriteLine("DELETE statement failed");
+                        conn.Close();
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    conn.Close();
+                    return false;
+                }
+                conn.Close();
+                //-------Finally, Delete the meeting itself-------
+                try
+                {
+                    Console.WriteLine("Connecting to MySQL...");
+                    conn.Open();
+                    string sql = "DELETE FROM ford_kelley_thompson_meeting WHERE host=@emp AND date=@myDate AND title=@t LIMIT 1";
+                    MySqlCommand cmd = new MySqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
+                    cmd.Parameters.AddWithValue("@myDate", DateTime.Parse(this.getDate()));
+                    cmd.Parameters.AddWithValue("@t", this.getTitle());
+                    if (cmd.ExecuteNonQuery() > 0)
+                    { //Executes the command
+                        Console.WriteLine("DELETE statement successful");
+                    }
+                    else
+                    {
+                        Console.WriteLine("DELETE statement failed");
+                        conn.Close();
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    conn.Close();
+                    return false;
+                }
+                conn.Close();
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
+            else {
+                return false;
             }
-            conn.Close();
             //After removing the meeting, it refreshes the meeting list
             retrieveExistingMeetings(this.getDate());
+            return true;
         }
 
         //Put the list of meetings into the specified listBox
