@@ -14,11 +14,15 @@ namespace CSC340GroupProject
     public partial class Form3 : Form
     {
         string selectedDate;
+        String attendingMembers = textBox4.Text;
+
 
         public Form3()
         {
             InitializeComponent();
             selectedDate = DateTime.Now.ToString("yyyy/MM/dd");
+            
+
         }
 
         private void button1_Click(object sender, EventArgs e) //Confirm Creation
@@ -35,6 +39,11 @@ namespace CSC340GroupProject
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
             selectedDate = monthCalendar1.SelectionRange.Start.ToString("yyyy-MM-dd");
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

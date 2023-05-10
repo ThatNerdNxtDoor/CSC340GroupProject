@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Google.Protobuf;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI.Relational;
+using Org.BouncyCastle.Utilities.Collections;
 
 namespace CSC340GroupProject
 {
@@ -251,6 +252,27 @@ namespace CSC340GroupProject
             //  Get string list of all the names, then use [string name].Split(",")
             //Then use the list of names to determine the attending members
             //Then put the meeting into each attending member's indivual database.
+
+            string[] attending = l.Split(",");
+            
+            for (int i = 0; i < attending.Length; i++)
+            {
+                string sql;    
+                switch (attending[i])
+                {
+                    case "Isaiah Thompson":
+                        sql = "INSERT INTO thompsonisaiahevent (employeeID, date, title) VALUES (@emp, @d, @t)";
+                            break;
+                    case "John Kelley":
+                        sql = "INSERT INTO kelleyevent(employeeID, date, title) VALUES(@emp, @d, @t)";
+                        break;
+                    case "Emily Ford":
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
             try //This puts the meeting in the group databse
             {
                 Console.WriteLine("Connecting to MySQL...");
@@ -338,7 +360,7 @@ namespace CSC340GroupProject
                                 cmd.Parameters.AddWithValue("@myDate", DateTime.Parse(this.getDate()));
                                 cmd.Parameters.AddWithValue("@t", this.getTitle());
                                 break;
-                            case "": //John
+                            case "DELETE FROM kelleyevent WHERE ": //John
                                 break;
                             case " ": //Emily
                                 break;

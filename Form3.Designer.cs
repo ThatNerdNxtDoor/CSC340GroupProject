@@ -28,206 +28,216 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            button2 = new Button();
-            label1 = new Label();
-            label2 = new Label();
-            label3 = new Label();
-            label4 = new Label();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            label5 = new Label();
-            textBox5 = new TextBox();
-            label6 = new Label();
-            monthCalendar1 = new MonthCalendar();
-            label7 = new Label();
-            label8 = new Label();
-            textBox6 = new TextBox();
-            SuspendLayout();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.SuspendLayout();
             // 
             // button1
             // 
-            button1.BackColor = Color.Maroon;
-            button1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            button1.ForeColor = SystemColors.Control;
-            button1.Location = new Point(12, 440);
-            button1.Name = "button1";
-            button1.Size = new Size(154, 63);
-            button1.TabIndex = 0;
-            button1.Text = "Confirm";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            this.button1.BackColor = System.Drawing.Color.Maroon;
+            this.button1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button1.ForeColor = System.Drawing.SystemColors.Control;
+            this.button1.Location = new System.Drawing.Point(14, 587);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(176, 84);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Confirm";
+            this.button1.UseVisualStyleBackColor = false;
             // 
             // button2
             // 
-            button2.BackColor = Color.White;
-            button2.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            button2.ForeColor = SystemColors.ControlText;
-            button2.Location = new Point(406, 440);
-            button2.Name = "button2";
-            button2.Size = new Size(154, 63);
-            button2.TabIndex = 1;
-            button2.Text = "Cancel";
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click;
+            this.button2.BackColor = System.Drawing.Color.White;
+            this.button2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.button2.Location = new System.Drawing.Point(464, 587);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(176, 84);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "Cancel";
+            this.button2.UseVisualStyleBackColor = false;
             // 
             // label1
             // 
-            label1.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(12, 38);
-            label1.Name = "label1";
-            label1.Size = new Size(123, 34);
-            label1.TabIndex = 2;
-            label1.Text = "Start Time";
-            label1.TextAlign = ContentAlignment.MiddleRight;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(12, 51);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(141, 45);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Start Time";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
-            label2.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(12, 72);
-            label2.Name = "label2";
-            label2.Size = new Size(123, 34);
-            label2.TabIndex = 3;
-            label2.Text = "End Time";
-            label2.TextAlign = ContentAlignment.MiddleRight;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(14, 96);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(141, 45);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "End Time";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label3
             // 
-            label3.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(12, 106);
-            label3.Name = "label3";
-            label3.Size = new Size(123, 34);
-            label3.TabIndex = 4;
-            label3.Text = "Room #";
-            label3.TextAlign = ContentAlignment.MiddleRight;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(14, 141);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(141, 45);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Room #";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label4
             // 
-            label4.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(12, 150);
-            label4.Name = "label4";
-            label4.Size = new Size(246, 34);
-            label4.TabIndex = 5;
-            label4.Text = "Attending Employees";
-            label4.TextAlign = ContentAlignment.MiddleLeft;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(14, 200);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(281, 45);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Attending Employees";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(141, 20);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(230, 23);
-            textBox1.TabIndex = 6;
+            this.textBox1.Location = new System.Drawing.Point(161, 27);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(262, 27);
+            this.textBox1.TabIndex = 6;
             // 
             // textBox2
             // 
-            textBox2.Location = new Point(141, 49);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(230, 23);
-            textBox2.TabIndex = 7;
+            this.textBox2.Location = new System.Drawing.Point(161, 65);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(262, 27);
+            this.textBox2.TabIndex = 7;
             // 
             // textBox3
             // 
-            textBox3.Location = new Point(141, 85);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(230, 23);
-            textBox3.TabIndex = 8;
+            this.textBox3.Location = new System.Drawing.Point(161, 113);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(262, 27);
+            this.textBox3.TabIndex = 8;
             // 
             // textBox4
             // 
-            textBox4.Location = new Point(12, 187);
-            textBox4.Multiline = true;
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(309, 52);
-            textBox4.TabIndex = 9;
+            this.textBox4.Location = new System.Drawing.Point(14, 249);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox4.Multiline = true;
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(353, 68);
+            this.textBox4.TabIndex = 9;
             // 
             // label5
             // 
-            label5.Location = new Point(76, 387);
-            label5.Name = "label5";
-            label5.Size = new Size(439, 35);
-            label5.TabIndex = 10;
-            label5.Text = "Error - There is a time conflict with an attending Employee or the slecected room.";
+            this.label5.Location = new System.Drawing.Point(87, 516);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(502, 47);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "Error - There is a time conflict with an attending Employee or the slecected room" +
+    ".";
             // 
             // textBox5
             // 
-            textBox5.Location = new Point(141, 116);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(230, 23);
-            textBox5.TabIndex = 12;
+            this.textBox5.Location = new System.Drawing.Point(161, 155);
+            this.textBox5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(262, 27);
+            this.textBox5.TabIndex = 12;
             // 
             // label6
             // 
-            label6.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            label6.Location = new Point(12, 9);
-            label6.Name = "label6";
-            label6.Size = new Size(123, 34);
-            label6.TabIndex = 11;
-            label6.Text = "Title";
-            label6.TextAlign = ContentAlignment.MiddleRight;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label6.Location = new System.Drawing.Point(14, 12);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(141, 45);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Title";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // monthCalendar1
             // 
-            monthCalendar1.Location = new Point(333, 198);
-            monthCalendar1.Name = "monthCalendar1";
-            monthCalendar1.TabIndex = 13;
-            monthCalendar1.DateChanged += monthCalendar1_DateChanged;
+            this.monthCalendar1.Location = new System.Drawing.Point(381, 264);
+            this.monthCalendar1.Margin = new System.Windows.Forms.Padding(10, 12, 10, 12);
+            this.monthCalendar1.Name = "monthCalendar1";
+            this.monthCalendar1.TabIndex = 13;
             // 
             // label7
             // 
-            label7.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            label7.Location = new Point(333, 155);
-            label7.Name = "label7";
-            label7.Size = new Size(227, 34);
-            label7.TabIndex = 14;
-            label7.Text = "Date";
-            label7.TextAlign = ContentAlignment.MiddleCenter;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label7.Location = new System.Drawing.Point(381, 207);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(259, 45);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Date";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label8
             // 
-            label8.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            label8.Location = new Point(12, 242);
-            label8.Name = "label8";
-            label8.Size = new Size(154, 34);
-            label8.TabIndex = 15;
-            label8.Text = "Description";
-            label8.TextAlign = ContentAlignment.MiddleLeft;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label8.Location = new System.Drawing.Point(14, 323);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(176, 45);
+            this.label8.TabIndex = 15;
+            this.label8.Text = "Description";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // textBox6
             // 
-            textBox6.Location = new Point(12, 279);
-            textBox6.Multiline = true;
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(309, 81);
-            textBox6.TabIndex = 16;
+            this.textBox6.Location = new System.Drawing.Point(14, 372);
+            this.textBox6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox6.Multiline = true;
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(353, 107);
+            this.textBox6.TabIndex = 16;
             // 
             // Form3
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(575, 515);
-            Controls.Add(textBox6);
-            Controls.Add(label8);
-            Controls.Add(label7);
-            Controls.Add(monthCalendar1);
-            Controls.Add(textBox5);
-            Controls.Add(label6);
-            Controls.Add(label5);
-            Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(label1);
-            Controls.Add(button2);
-            Controls.Add(button1);
-            Name = "Form3";
-            Text = "New Meeting";
-            ResumeLayout(false);
-            PerformLayout();
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(657, 687);
+            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.monthCalendar1);
+            this.Controls.Add(this.textBox5);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.Name = "Form3";
+            this.Text = "New Meeting";
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
         }
 
         #endregion
