@@ -146,9 +146,11 @@ namespace CSC340GroupProject
                         cmd.Parameters.AddWithValue("@myDate", dateString);
                         cmd.Parameters.AddWithValue("@emp", 2);
                         break;
-                    case "Emily Ford": //Emily will put her respective SQL statement here.
-                        sql = "";
+                    case "Emily Ford":
+                        sql = "SELECT * FROM fordevent WHERE eventDay=@myDate AND employeeID=@emp ORDER BY startTime ASC";
                         cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@myDate", dateString);
+                        cmd.Parameters.AddWithValue("@emp", 3);
                         break;
                     default: //Default
                         sql = "";
@@ -187,7 +189,12 @@ namespace CSC340GroupProject
                         newMeeting.location = row["location"].ToString();
                         break;
                     case "Emily Ford":
-                        //Emi put your code here dungus
+                        newMeeting.title = row["eventName"].ToString();
+                        newMeeting.date = DateTime.Parse(row["eventDay"].ToString());
+                        newMeeting.startTime = TimeSpan.ParseExact(row["startTime"].ToString(), "hh\\:mm\\:ss", null);
+                        newMeeting.endTime = TimeSpan.ParseExact(row["endTime"].ToString(), "hh\\:mm\\:ss", null);
+                        newMeeting.description = row["description"].ToString();
+                        newMeeting.location = row["location"].ToString();
                         break;
 
                     default:
@@ -362,7 +369,12 @@ namespace CSC340GroupProject
                                 break;
                             case "DELETE FROM kelleyevent WHERE ": //John
                                 break;
-                            case " ": //Emily
+                            case "emilyford01": //Emily
+                                string sql = "DELETE FROM fordemilyevent WHERE employeeID=@emp AND eventDay=@myDay AND eventName=@t LIMIT 1";
+                                cmd = new MySqlCommand(sql, conn);
+                                cmd.Parameters.AddWithValue("@emp", 2);
+                                cmd.Parameters.AddWithValue("@myDay", DateTime.Parse(this.getDate()));
+                                cmd.Parameters.AddWithValue("@name", this.getTitle());
                                 break;
                             default:
                                 break;
