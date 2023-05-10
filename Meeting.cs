@@ -261,24 +261,7 @@ namespace CSC340GroupProject
             //Then put the meeting into each attending member's indivual database.
 
             string[] attending = l.Split(",");
-            
-            for (int i = 0; i < attending.Length; i++)
-            {
-                string sql;    
-                switch (attending[i])
-                {
-                    case "Isaiah Thompson":
-                        sql = "INSERT INTO thompsonisaiahevent (employeeID, date, title) VALUES (@emp, @d, @t)";
-                            break;
-                    case "John Kelley":
-                        sql = "INSERT INTO kelleyevent(employeeID, date, title) VALUES(@emp, @d, @t)";
-                        break;
-                    case "Emily Ford":
-                        break;
-                    default:
-                        break;
-                }
-            }
+           
             
             try //This puts the meeting in the group databse
             {
@@ -310,6 +293,60 @@ namespace CSC340GroupProject
                 return false;
             }
             conn.Close();
+
+            for (int i = 0; i < attending.Length; i++)
+            {
+                string sql;
+                MySqlCommand cmd;
+                switch (attending[i])
+                {
+                    case "Isaiah Thompson":
+                        sql = "INSERT INTO thompsonisaiahevent (employeeID, title, startTime, endTime, date, location, description) VALUES (@emp, @t, @st, @et, @d, @l, @ds)";
+                        cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
+                        cmd.Parameters.AddWithValue("@t", t);
+                        cmd.Parameters.AddWithValue("@st", TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null));
+                        cmd.Parameters.AddWithValue("@et", TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null));
+                        cmd.Parameters.AddWithValue("@d", DateTime.Parse(d));
+                        cmd.Parameters.AddWithValue("@l", l);
+                        cmd.Parameters.AddWithValue("@ds", ds);
+                        break;
+                    case "John Kelley":
+                        sql = "INSERT INTO kelleyevent(event_name, start_time, end_time, location, description, event_day, employee_ID) VALUES(@t, @st, @et, @l, @ds, @d)";
+                        cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@t", t);
+                        cmd.Parameters.AddWithValue("@st", TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null));
+                        cmd.Parameters.AddWithValue("@et", TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null));
+                        cmd.Parameters.AddWithValue("@l", l);
+                        cmd.Parameters.AddWithValue("@ds", ds);
+                        cmd.Parameters.AddWithValue("@d", DateTime.Parse(d));
+                        cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
+                        break;
+                    case "Emily Ford":
+                        sql = "INSERT INTO fordevents(eventName, startTime, endTime, location, description, eventDay, empUsername) VALUES (@t, @st, @et, @l, @ds, @d)";
+                        cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@t", t);
+                        cmd.Parameters.AddWithValue("@st", TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null));
+                        cmd.Parameters.AddWithValue("@et", TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null));
+                        cmd.Parameters.AddWithValue("@l", l);
+                        cmd.Parameters.AddWithValue("@ds", ds);
+                        cmd.Parameters.AddWithValue("@d", DateTime.Parse(d));
+                        cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
+                        break;
+                    default:
+                        break;
+                }
+                if (cmd.ExecuteNonQuery() > 0) //Executes the command
+                {
+                    Console.WriteLine("INSERT statement successful");
+                }
+                else
+                {
+                    Console.WriteLine("INSERT statement failed");
+                    return false;
+                }
+
+            }
             //Then add to the attending table, one for each attending member. Each one will be tied to the same meeting id, how to get that is in the link I'm sending to you on discord.
             //After adding the new meeting, it refreshes the meeting list
             retrieveExistingMeetings(d);
