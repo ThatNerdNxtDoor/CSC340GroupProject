@@ -82,7 +82,7 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Start Time";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.label1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // label2
             // 

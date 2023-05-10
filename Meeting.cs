@@ -335,17 +335,19 @@ namespace CSC340GroupProject
                         break;
                     default:
                         break;
-                }
-                if (cmd.ExecuteNonQuery() > 0) //Executes the command
-                {
-                    Console.WriteLine("INSERT statement successful");
-                }
-                else
-                {
-                    Console.WriteLine("INSERT statement failed");
-                    return false;
+
+                        if (cmd.ExecuteNonQuery() > 0) //Executes the command
+                        {
+                            Console.WriteLine("INSERT statement successful");
+                        }
+                        else
+                        {
+                            Console.WriteLine("INSERT statement failed");
+                            return false;
+                        }
                 }
 
+                
             }
             //Then add to the attending table, one for each attending member. Each one will be tied to the same meeting id, how to get that is in the link I'm sending to you on discord.
             //After adding the new meeting, it refreshes the meeting list
@@ -357,6 +359,7 @@ namespace CSC340GroupProject
         //Determine if current employee is the host of the meeting. If so, go forward with deletion, if not, stop
         public bool deleteMeeting()
         {
+            string sql;
             if (this.host == currentEmployee.getUsername())
             {
                 string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
@@ -366,7 +369,7 @@ namespace CSC340GroupProject
                 DataTable myTable = new DataTable();
                 try
                 {
-                    string sql;
+                    
                     Console.WriteLine("Connecting to MySQL...");
                     conn.Open();
                     MySqlCommand cmd;
@@ -395,19 +398,21 @@ namespace CSC340GroupProject
                     {
                         Console.WriteLine("Connecting to MySQL...");
                         conn.Open();
+                        
                         MySqlCommand cmd = new MySqlCommand();
                         switch (emp) {
                             case "isaiahthompson02": //Isaiah
-                                string sql = "DELETE FROM thompsonisaiahevent WHERE employeeID=@emp AND date=@myDate AND title=@t LIMIT 1";
+                              sql = "DELETE FROM thompsonisaiahevent WHERE employeeID=@emp AND date=@myDate AND title=@t LIMIT 1";
                                 cmd = new MySqlCommand(sql, conn);
                                 cmd.Parameters.AddWithValue("@emp", 1);
                                 cmd.Parameters.AddWithValue("@myDate", DateTime.Parse(this.getDate()));
                                 cmd.Parameters.AddWithValue("@t", this.getTitle());
                                 break;
-                            case "DELETE FROM kelleyevent WHERE ": //John
+                            case "john_kelley66":
+                                sql = "DELETE FROM kelleyevent WHERE employee_ID=@emp AND eventDay=@myDay AND event_name=@t LIMIT 1";//John
                                 break;
                             case "emilyford01": //Emily
-                                string sql = "DELETE FROM fordemilyevent WHERE employeeID=@emp AND eventDay=@myDay AND eventName=@t LIMIT 1";
+                                sql = "DELETE FROM fordemilyevent WHERE employeeID=@emp AND eventDay=@myDay AND eventName=@t LIMIT 1";
                                 cmd = new MySqlCommand(sql, conn);
                                 cmd.Parameters.AddWithValue("@emp", 2);
                                 cmd.Parameters.AddWithValue("@myDay", DateTime.Parse(this.getDate()));
@@ -440,7 +445,7 @@ namespace CSC340GroupProject
                 {
                     Console.WriteLine("Connecting to MySQL...");
                     conn.Open();
-                    string sql = "DELETE FROM ford_kelley_thompson_attending WHERE meetingID=@m";
+                    sql = "DELETE FROM ford_kelley_thompson_attending WHERE meetingID=@m";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@m", this.id);
                     if (cmd.ExecuteNonQuery() > 0)
@@ -466,7 +471,7 @@ namespace CSC340GroupProject
                 {
                     Console.WriteLine("Connecting to MySQL...");
                     conn.Open();
-                    string sql = "DELETE FROM ford_kelley_thompson_meeting WHERE host=@emp AND date=@myDate AND title=@t LIMIT 1";
+                    sql = "DELETE FROM ford_kelley_thompson_meeting WHERE host=@emp AND date=@myDate AND title=@t LIMIT 1";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
                     cmd.Parameters.AddWithValue("@myDate", DateTime.Parse(this.getDate()));

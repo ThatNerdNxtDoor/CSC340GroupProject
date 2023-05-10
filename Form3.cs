@@ -14,15 +14,14 @@ namespace CSC340GroupProject
     public partial class Form3 : Form
     {
         string selectedDate;
-        String attendingMembers = textBox4.Text;
+        String attendingMembers;
 
 
         public Form3()
         {
             InitializeComponent();
             selectedDate = DateTime.Now.ToString("yyyy/MM/dd");
-            
-
+            attendingMembers = textBox4.Text;
         }
 
         private void button1_Click(object sender, EventArgs e) //Confirm Creation
