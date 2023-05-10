@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,14 +46,14 @@ namespace CSC340GroupProject
         {
             //retrieve data from database
             string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
-            MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection(connStr);
+            MySqlConnection conn = new MySqlConnection(connStr);
 
             try
             {
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 string sql = "SELECT * FROM ford_kelley_thompson_employee WHERE username=@name AND password=@passd";
-                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(sql, conn);
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@name", username);
                 cmd.Parameters.AddWithValue("@passd", password);

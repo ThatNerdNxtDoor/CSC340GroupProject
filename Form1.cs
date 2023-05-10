@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace CSC340GroupProject
 {
     public partial class Form1 : Form
@@ -9,6 +11,7 @@ namespace CSC340GroupProject
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Debug.WriteLine("Beginning connection");
             if (Employee.validateIdentification(textBox1.Text.ToString(), textBox2.Text.ToString()))
             {
                 //Make login form dissappear

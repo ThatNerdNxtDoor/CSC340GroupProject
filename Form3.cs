@@ -26,7 +26,7 @@ namespace CSC340GroupProject
 
         private void button1_Click(object sender, EventArgs e) //Confirm Creation
         {
-            Meeting.createMeeting(textBox1.Text, textBox2.Text, textBox3.Text, selectedDate, textBox4.Text, textBox5.Text);
+            Meeting.createMeeting(textBox1.Text, textBox2.Text, textBox3.Text, selectedDate, textBox5.Text, textBox4.Text, textBox6.Text);
             this.Close();
         }
 
@@ -38,11 +38,6 @@ namespace CSC340GroupProject
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
         {
             selectedDate = monthCalendar1.SelectionRange.Start.ToString("yyyy-MM-dd");
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-
         }
     }
 }

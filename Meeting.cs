@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -10,6 +11,7 @@ using Google.Protobuf;
 using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI.Relational;
 using Org.BouncyCastle.Utilities.Collections;
+using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace CSC340GroupProject
 {
@@ -251,7 +253,7 @@ namespace CSC340GroupProject
 
         //Create a new meeting in the database
         //returns bool to see if the creation was successful
-        public static bool createMeeting(string t, string st, string et, string d, string l, string ds)
+        public static bool createMeeting(string t, string st, string et, string d, string l, string ds, string emp)
         {
             string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
             MySqlConnection conn = new MySqlConnection(connStr);
@@ -260,23 +262,25 @@ namespace CSC340GroupProject
             //Then use the list of names to determine the attending members
             //Then put the meeting into each attending member's indivual database.
 
-            string[] attending = l.Split(",");
+            string[] attending = emp.Split(",");
            
             
-            try //This puts the meeting in the group databse
+            try //This puts the meeting in the group database
             {
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 ////////////////Todo: Redo SQL statement
-                string sql = "INSERT INTO ford_kelley_thompson_meetings (host, title, startTime, endTime, date, location, description) VALUES (@emp, @t, @st, @et, @d, @l, @ds)";
+                string sql = "INSERT INTO ford_kelley_thompson_meeting (host, room, startTime, endTime, meetingDate, meetingTitle, meetingDescription) VALUES (@emp, @l, @st, @et, @d, @t, @ds)";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
                 cmd.Parameters.AddWithValue("@t", t);
                 cmd.Parameters.AddWithValue("@st", TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null));
                 cmd.Parameters.AddWithValue("@et", TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null));
                 cmd.Parameters.AddWithValue("@d", DateTime.Parse(d));
-                cmd.Parameters.AddWithValue("@l", l);
+                cmd.Parameters.AddWithValue("@l", Int32.Parse(l));
                 cmd.Parameters.AddWithValue("@ds", ds);
+                Debug.WriteLine(cmd.Parameters.ToString());
+                Debug.WriteLine("First");
                 if (cmd.ExecuteNonQuery() > 0) //Executes the command
                 {
                     Console.WriteLine("INSERT statement successful");
@@ -293,7 +297,73 @@ namespace CSC340GroupProject
                 return false;
             }
             conn.Close();
-
+            //Get ID of last inserted meeting
+            int meetingID;
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                string sql = "SELECT LAST_INSERT_ID() FROM ford_kelley_thompson_meetings";
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                Console.WriteLine("Second");
+                MySqlDataReader myReader = cmd.ExecuteReader();
+                if (myReader.Read())
+                {
+                    meetingID = myReader.GetInt16(0);
+                    myReader.Close();
+                }
+                else
+                {
+                    myReader.Close();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+            conn.Close();
+            //Fill attending table
+            for (int i = 0; i < attending.Length; i++)
+            {
+                string sql;
+                MySqlCommand cmd;
+                switch (attending[i])
+                {
+                    case "Isaiah Thompson":
+                        sql = "INSERT INTO ford_kelley_thompson_attending (employeeID, meetingID) VALUES (@emp, @m)";
+                        cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@emp", "isaiah_thompson6");
+                        cmd.Parameters.AddWithValue("@m", meetingID);
+                        break;
+                    case "John Kelley":
+                        sql = "INSERT INTO ford_kelley_thompson_attending (employeeID, meetingID) VALUES (@emp, @m)";
+                        cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@emp", "john_kelley66");
+                        cmd.Parameters.AddWithValue("@m", meetingID);
+                        break;
+                    case "Emily Ford":
+                        sql = "INSERT INTO ford_kelley_thompson_attending (employeeID, meetingID) VALUES (@emp, @m)";
+                        cmd = new MySqlCommand(sql, conn);
+                        cmd.Parameters.AddWithValue("@emp", "emi_ford01");
+                        cmd.Parameters.AddWithValue("@m", meetingID);
+                        break;
+                    default:
+                        cmd = new MySqlCommand();
+                        break;
+                }
+                if (cmd.ExecuteNonQuery() > 0) //Executes the command
+                {
+                    Console.WriteLine("INSERT statement successful");
+                }
+                else
+                {
+                    Console.WriteLine("INSERT statement failed");
+                    return false;
+                }
+            }
+            //Add event to individual tables
             for (int i = 0; i < attending.Length; i++)
             {
                 string sql;
@@ -334,22 +404,19 @@ namespace CSC340GroupProject
                         cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
                         break;
                     default:
+                        cmd = new MySqlCommand();
                         break;
-
-                        if (cmd.ExecuteNonQuery() > 0) //Executes the command
-                        {
-                            Console.WriteLine("INSERT statement successful");
-                        }
-                        else
-                        {
-                            Console.WriteLine("INSERT statement failed");
-                            return false;
-                        }
                 }
-
-                
+                if (cmd.ExecuteNonQuery() > 0) //Executes the command
+                {
+                    Console.WriteLine("INSERT statement successful");
+                }
+                else
+                {
+                    Console.WriteLine("INSERT statement failed");
+                    return false;
+                }
             }
-            //Then add to the attending table, one for each attending member. Each one will be tied to the same meeting id, how to get that is in the link I'm sending to you on discord.
             //After adding the new meeting, it refreshes the meeting list
             retrieveExistingMeetings(d);
             return true;
