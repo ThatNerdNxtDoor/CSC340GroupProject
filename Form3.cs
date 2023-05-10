@@ -36,5 +36,10 @@ namespace CSC340GroupProject
         {
             selectedDate = monthCalendar1.SelectionRange.Start.ToString("yyyy-MM-dd");
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
