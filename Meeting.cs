@@ -41,7 +41,7 @@ namespace CSC340GroupProject
 
         public Meeting()
         {
-
+            
         }
 
         public String getStartTime()
@@ -223,7 +223,7 @@ namespace CSC340GroupProject
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 MySqlCommand cmd;
-                sql = "SELECT * FROM ford_kelley_thompson_meetings WHERE meetingDate=@myDate AND room=@rm ORDER BY startTime ASC";
+                sql = "SELECT * FROM ford_kelley_thompson_meeting WHERE meetingDate=@myDate AND room=@rm ORDER BY startTime ASC";
                 cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@myDate", dateString);
                 cmd.Parameters.AddWithValue("@rm", roomNum); //Room's ID
