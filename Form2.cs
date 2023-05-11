@@ -48,6 +48,7 @@ namespace CSC340GroupProject
         private void button4_Click(object sender, EventArgs e) //Log Out
         {
             panel1.Visible = true;
+            panel1.BringToFront();
         }
 
         private void button8_Click(object sender, EventArgs e) //Confirm Log Out
@@ -89,7 +90,7 @@ namespace CSC340GroupProject
 
             panel2.Visible = true;
 
-            label2.Text = selectedMeeting.getTitle();
+            label1.Text = selectedMeeting.getTitle();
             textBox5.Text = selectedMeeting.getDate();
             textBox1.Text = selectedMeeting.getStartTime();
             textBox2.Text = selectedMeeting.getEndTime();
@@ -97,7 +98,8 @@ namespace CSC340GroupProject
             ArrayList attList = Employee.retrieveEmployeeList(selectedMeeting.getID());
             textBox4.Text = "";
             Employee emp;
-            for (int i = 0; i < attList.Count - 1; i++) {
+            for (int i = 0; i < attList.Count - 1; i++)
+            {
                 emp = (Employee)attList[i];
                 textBox4.Text += emp.getName() + ", ";
             }

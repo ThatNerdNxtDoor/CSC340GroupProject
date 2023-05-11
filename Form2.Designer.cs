@@ -45,6 +45,8 @@
             button13 = new Button();
             label5 = new Label();
             panel2 = new Panel();
+            textBox6 = new TextBox();
+            label10 = new Label();
             textBox5 = new TextBox();
             label9 = new Label();
             textBox4 = new TextBox();
@@ -56,8 +58,6 @@
             label6 = new Label();
             label4 = new Label();
             label1 = new Label();
-            label10 = new Label();
-            textBox6 = new TextBox();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             panel2.SuspendLayout();
@@ -270,6 +270,24 @@
             panel2.TabIndex = 13;
             panel2.Visible = false;
             // 
+            // textBox6
+            // 
+            textBox6.Location = new Point(3, 290);
+            textBox6.Multiline = true;
+            textBox6.Name = "textBox6";
+            textBox6.Size = new Size(293, 43);
+            textBox6.TabIndex = 12;
+            // 
+            // label10
+            // 
+            label10.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label10.Location = new Point(3, 257);
+            label10.Name = "label10";
+            label10.Size = new Size(210, 30);
+            label10.TabIndex = 11;
+            label10.Text = "Description";
+            label10.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // textBox5
             // 
             textBox5.Location = new Point(107, 53);
@@ -365,24 +383,6 @@
             label1.TabIndex = 0;
             label1.Text = "MeetingTitle";
             label1.TextAlign = ContentAlignment.TopCenter;
-            // 
-            // label10
-            // 
-            label10.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label10.Location = new Point(3, 257);
-            label10.Name = "label10";
-            label10.Size = new Size(210, 30);
-            label10.TabIndex = 11;
-            label10.Text = "Description";
-            label10.TextAlign = ContentAlignment.MiddleLeft;
-            // 
-            // textBox6
-            // 
-            textBox6.Location = new Point(3, 290);
-            textBox6.Multiline = true;
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(293, 43);
-            textBox6.TabIndex = 12;
             // 
             // Form2
             // 

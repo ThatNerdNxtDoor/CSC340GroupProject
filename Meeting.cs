@@ -267,7 +267,6 @@ namespace CSC340GroupProject
             //Then put the meeting into each attending member's indivual database.
 
             string[] attending = emp.Split(",");
-            Debug.WriteLine("-" + attending[1] + "-");
             
             try //This puts the meeting in the group database
             {
