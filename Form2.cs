@@ -23,15 +23,16 @@ namespace CSC340GroupProject
         {
             InitializeComponent();
             selectedDate = DateTime.Today;
-
-            Meeting.retrieveExistingMeetings(thisDate);
+            thisDate = selectedDate.ToString("yyyy-MM-dd");
+            mList = Meeting.retrieveExistingMeetings(thisDate);
+            Meeting.displayMeetings(mList, listBox2);
         }
 
         private void button1_Click(object sender, EventArgs e) //Create new meeting
         {
             new Form3().Show();
-            
-            
+
+
         }
 
         private void button3_Click(object sender, EventArgs e) //Check room availibility
@@ -86,11 +87,23 @@ namespace CSC340GroupProject
         {
             selectedMeeting = (Meeting)mList[listBox2.SelectedIndex];
 
-            textBox1.Text = selectedMeeting.getTitle();
-            textBox2.Text = selectedMeeting.getStartTime();
-            textBox3.Text = selectedMeeting.getEndTime();
-            textBox4.Text = selectedMeeting.getLocation();
-            textBox5.Text = selectedMeeting.getDescription();
+            panel2.Visible = true;
+
+            label2.Text = selectedMeeting.getTitle();
+            textBox5.Text = selectedMeeting.getDate();
+            textBox1.Text = selectedMeeting.getStartTime();
+            textBox2.Text = selectedMeeting.getEndTime();
+            textBox3.Text = selectedMeeting.getLocation();
+            ArrayList attList = Employee.retrieveEmployeeList(selectedMeeting.getID());
+            textBox4.Text = "";
+            Employee emp;
+            for (int i = 0; i < attList.Count - 1; i++) {
+                emp = (Employee)attList[i];
+                textBox4.Text += emp.getName() + ", ";
+            }
+            emp = (Employee)attList[attList.Count - 1];
+            textBox4.Text += emp.getName();
+            textBox6.Text = selectedMeeting.getDescription();
         }
 
         private void button13_Click(object sender, EventArgs e) //Confirm Delete
@@ -99,7 +112,8 @@ namespace CSC340GroupProject
             {
                 panel3.Visible = false;
             }
-            else {
+            else
+            {
                 label5.Text = "Delete failed. You cannot delete a meeting you are not the host of.";
             }
             mList = Meeting.retrieveExistingMeetings(thisDate);

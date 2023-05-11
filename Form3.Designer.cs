@@ -149,6 +149,7 @@
             label5.Size = new Size(439, 35);
             label5.TabIndex = 10;
             label5.Text = "Error - There is a time conflict with an attending Employee or the slecected room.";
+            label5.Visible = false;
             // 
             // textBox5
             // 

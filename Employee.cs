@@ -117,6 +117,44 @@ namespace CSC340GroupProject
             return eList;
         }
 
+        //Overload for retrieving employees that are attending a specific meeting
+        public static ArrayList retrieveEmployeeList(int meetingID)
+        {
+            ArrayList eList = new ArrayList();
+            //prepare an SQL query to retrieve all of the employees
+            DataTable myTable = new DataTable();
+            string connStr = "server=csitmariadb.eku.edu;user=student;database=csc340_db;port=3306;password=Maroon@21?;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                string sql;
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                MySqlCommand cmd;
+                sql = "SELECT ford_kelley_thompson_employee.* FROM ford_kelley_thompson_employee INNER JOIN ford_kelley_thompson_attending ON ford_kelley_thompson_employee.username = ford_kelley_thompson_attending.employeeID WHERE ford_kelley_thompson_attending.meetingID=@m ORDER BY name ASC";
+                cmd = new MySqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@m", meetingID);
+                MySqlDataAdapter myAdapter = new MySqlDataAdapter(cmd);
+                myAdapter.Fill(myTable); //Executes the command
+                Console.WriteLine("Table is ready.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            //convert the retrieved data to meetings and save them to the list
+            foreach (DataRow row in myTable.Rows)
+            {
+                Employee newEmp = new Employee();
+                newEmp.username = row["username"].ToString();
+                newEmp.password = row["password"].ToString();
+                newEmp.name = row["name"].ToString();
+                eList.Add(newEmp);
+            }
+            return eList;
+        }
+
         public static void displayEmployeeList(ListBox listBox, ArrayList eList) {
             listBox.Items.Clear();
             for (int i = 0; i < eList.Count; i++)

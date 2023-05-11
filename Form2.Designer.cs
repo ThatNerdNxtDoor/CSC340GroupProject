@@ -56,6 +56,8 @@
             label6 = new Label();
             label4 = new Label();
             label1 = new Label();
+            label10 = new Label();
+            textBox6 = new TextBox();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             panel2.SuspendLayout();
@@ -249,6 +251,8 @@
             // panel2
             // 
             panel2.BackColor = SystemColors.ActiveBorder;
+            panel2.Controls.Add(textBox6);
+            panel2.Controls.Add(label10);
             panel2.Controls.Add(textBox5);
             panel2.Controls.Add(label9);
             panel2.Controls.Add(textBox4);
@@ -285,10 +289,10 @@
             // 
             // textBox4
             // 
-            textBox4.Location = new Point(3, 214);
+            textBox4.Location = new Point(3, 211);
             textBox4.Multiline = true;
             textBox4.Name = "textBox4";
-            textBox4.Size = new Size(293, 137);
+            textBox4.Size = new Size(293, 43);
             textBox4.TabIndex = 8;
             // 
             // textBox3
@@ -320,7 +324,7 @@
             label8.Size = new Size(210, 30);
             label8.TabIndex = 4;
             label8.Text = "Attending Employees";
-            label8.TextAlign = ContentAlignment.TopCenter;
+            label8.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // label7
             // 
@@ -361,6 +365,24 @@
             label1.TabIndex = 0;
             label1.Text = "MeetingTitle";
             label1.TextAlign = ContentAlignment.TopCenter;
+            // 
+            // label10
+            // 
+            label10.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            label10.Location = new Point(3, 257);
+            label10.Name = "label10";
+            label10.Size = new Size(210, 30);
+            label10.TabIndex = 11;
+            label10.Text = "Description";
+            label10.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // textBox6
+            // 
+            textBox6.Location = new Point(3, 290);
+            textBox6.Multiline = true;
+            textBox6.Name = "textBox6";
+            textBox6.Size = new Size(293, 43);
+            textBox6.TabIndex = 12;
             // 
             // Form2
             // 
@@ -417,5 +439,7 @@
         private TextBox textBox3;
         private TextBox textBox2;
         private TextBox textBox1;
+        private TextBox textBox6;
+        private Label label10;
     }
 }

@@ -56,7 +56,7 @@ namespace CSC340GroupProject
 
         public String getDate()
         {
-            return date.ToString();
+            return date.ToString("yyyy/MM/dd");
         }
 
         public String getLocation()
@@ -71,6 +71,10 @@ namespace CSC340GroupProject
         public String getDescription()
         {
             return description;
+        }
+
+        public int getID() {
+            return id;
         }
 
         //Retrieves meetings
@@ -89,7 +93,7 @@ namespace CSC340GroupProject
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 MySqlCommand cmd;
-                sql = "SELECT * FROM ford_kelley_thompson_meeting INNER JOIN ford_kelley_thompson_attending ON ford_kelley_thompson_meeting.id = ford_kelley_thompson_attending.meetingID WHERE ford_kelley_thompson_meeting.date=@myDate AND ford_kelley_thompson_attending.employeeID=@emp ORDER BY startTime ASC";
+                sql = "SELECT ford_kelley_thompson_meeting.* FROM ford_kelley_thompson_meeting INNER JOIN ford_kelley_thompson_attending ON ford_kelley_thompson_meeting.id = ford_kelley_thompson_attending.meetingID WHERE ford_kelley_thompson_meeting.meetingDate=@myDate AND ford_kelley_thompson_attending.employeeID=@emp ORDER BY startTime ASC";
                 cmd = new MySqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@myDate", dateString);
                 cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
@@ -149,10 +153,10 @@ namespace CSC340GroupProject
                         cmd.Parameters.AddWithValue("@emp", 2);
                         break;
                     case "Emily Ford":
-                        sql = "SELECT * FROM fordevent WHERE eventDay=@myDate AND employeeID=@emp ORDER BY startTime ASC";
+                        sql = "SELECT * FROM fordevents WHERE eventDay=@myDate AND empUsername=@emp ORDER BY startTime ASC";
                         cmd = new MySqlCommand(sql, conn);
                         cmd.Parameters.AddWithValue("@myDate", dateString);
-                        cmd.Parameters.AddWithValue("@emp", 3);
+                        cmd.Parameters.AddWithValue("@emp", "forde");
                         break;
                     default: //Default
                         sql = "";
@@ -428,7 +432,6 @@ namespace CSC340GroupProject
             return true;
         }
 
-        //Todo: Delete the meeting from every attending member's database
         //Determine if current employee is the host of the meeting. If so, go forward with deletion, if not, stop
         public bool deleteMeeting()
         {
@@ -446,9 +449,10 @@ namespace CSC340GroupProject
                     Console.WriteLine("Connecting to MySQL...");
                     conn.Open();
                     MySqlCommand cmd;
-                    sql = "SELECT employeeID FROM ford_kelley_thompson_attending WHERE meetingID=@m ORDER BY startTime ASC";
+                    sql = "SELECT employeeID FROM ford_kelley_thompson_attending WHERE meetingID=@m";
                     cmd = new MySqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("@m", this.id);
+                    Debug.WriteLine("Phase 1");
                     MySqlDataAdapter myAdapter = new MySqlDataAdapter(cmd);
                     myAdapter.Fill(myTable); //Executes the command
                     Console.WriteLine("Table is ready.");
@@ -465,6 +469,7 @@ namespace CSC340GroupProject
                     string employee = row["employeeID"].ToString();
                     attendants.Add(employee);
                 }
+                Debug.WriteLine("Phase 2");
                 foreach (string emp in attendants)
                 {
                     try
@@ -474,22 +479,26 @@ namespace CSC340GroupProject
                         
                         MySqlCommand cmd = new MySqlCommand();
                         switch (emp) {
-                            case "isaiahthompson02": //Isaiah
-                              sql = "DELETE FROM thompsonisaiahevent WHERE employeeID=@emp AND date=@myDate AND title=@t LIMIT 1";
+                            case "isaiah_thompson6": //Isaiah
+                                sql = "DELETE FROM thompsonisaiahevent WHERE employeeID=@emp AND date=@myDate AND title=@t LIMIT 1";
                                 cmd = new MySqlCommand(sql, conn);
                                 cmd.Parameters.AddWithValue("@emp", 1);
                                 cmd.Parameters.AddWithValue("@myDate", DateTime.Parse(this.getDate()));
                                 cmd.Parameters.AddWithValue("@t", this.getTitle());
                                 break;
                             case "john_kelley66":
-                                sql = "DELETE FROM kelleyevent WHERE employee_ID=@emp AND eventDay=@myDay AND event_name=@t LIMIT 1";//John
-                                break;
-                            case "emilyford01": //Emily
-                                sql = "DELETE FROM fordemilyevent WHERE employeeID=@emp AND eventDay=@myDay AND eventName=@t LIMIT 1";
+                                sql = "DELETE FROM kelleyevents WHERE employee_ID=@emp AND event_day=@myDay AND event_name=@t LIMIT 1";//John
                                 cmd = new MySqlCommand(sql, conn);
                                 cmd.Parameters.AddWithValue("@emp", 2);
                                 cmd.Parameters.AddWithValue("@myDay", DateTime.Parse(this.getDate()));
-                                cmd.Parameters.AddWithValue("@name", this.getTitle());
+                                cmd.Parameters.AddWithValue("@t", this.getTitle());
+                                break;
+                            case "emi_ford01": //Emily
+                                sql = "DELETE FROM fordevents WHERE empUsername=@emp AND eventDay=@myDay AND eventName=@t LIMIT 1";
+                                cmd = new MySqlCommand(sql, conn);
+                                cmd.Parameters.AddWithValue("@emp", "forde");
+                                cmd.Parameters.AddWithValue("@myDay", DateTime.Parse(this.getDate()));
+                                cmd.Parameters.AddWithValue("@t", this.getTitle());
                                 break;
                             default:
                                 break;
@@ -513,17 +522,15 @@ namespace CSC340GroupProject
                     }
                     conn.Close();
                 }
-                
+                Debug.WriteLine("Phase 3");
                 //-------Finally, Delete the meeting itself-------
                 try
                 {
                     Console.WriteLine("Connecting to MySQL...");
                     conn.Open();
-                    sql = "DELETE FROM ford_kelley_thompson_meeting WHERE host=@emp AND date=@myDate AND title=@t LIMIT 1";
+                    sql = "DELETE FROM ford_kelley_thompson_meeting WHERE id=@m LIMIT 1";
                     MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
-                    cmd.Parameters.AddWithValue("@myDate", DateTime.Parse(this.getDate()));
-                    cmd.Parameters.AddWithValue("@t", this.getTitle());
+                    cmd.Parameters.AddWithValue("@m", this.id);
                     if (cmd.ExecuteNonQuery() > 0)
                     { //Executes the command
                         Console.WriteLine("DELETE statement successful");
