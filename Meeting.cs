@@ -263,7 +263,7 @@ namespace CSC340GroupProject
             //Then put the meeting into each attending member's indivual database.
 
             string[] attending = emp.Split(",");
-           
+            Debug.WriteLine("-" + attending[1] + "-");
             
             try //This puts the meeting in the group database
             {
@@ -277,9 +277,8 @@ namespace CSC340GroupProject
                 cmd.Parameters.AddWithValue("@st", TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null));
                 cmd.Parameters.AddWithValue("@et", TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null));
                 cmd.Parameters.AddWithValue("@d", DateTime.Parse(d));
-                cmd.Parameters.AddWithValue("@l", Int32.Parse(l));
+                cmd.Parameters.AddWithValue("@l", int.Parse(l));
                 cmd.Parameters.AddWithValue("@ds", ds);
-                Debug.WriteLine(cmd.Parameters.ToString());
                 Debug.WriteLine("First");
                 if (cmd.ExecuteNonQuery() > 0) //Executes the command
                 {
@@ -303,9 +302,9 @@ namespace CSC340GroupProject
             {
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
-                string sql = "SELECT LAST_INSERT_ID() FROM ford_kelley_thompson_meetings";
+                string sql = "SELECT LAST_INSERT_ID() FROM ford_kelley_thompson_meeting";
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
-                Console.WriteLine("Second");
+                Debug.WriteLine("Second");
                 MySqlDataReader myReader = cmd.ExecuteReader();
                 if (myReader.Read())
                 {
@@ -324,11 +323,13 @@ namespace CSC340GroupProject
                 return false;
             }
             conn.Close();
+            Debug.WriteLine(meetingID);
             //Fill attending table
             for (int i = 0; i < attending.Length; i++)
             {
                 string sql;
                 MySqlCommand cmd;
+                conn.Open();
                 switch (attending[i])
                 {
                     case "Isaiah Thompson":
@@ -350,7 +351,9 @@ namespace CSC340GroupProject
                         cmd.Parameters.AddWithValue("@m", meetingID);
                         break;
                     default:
-                        cmd = new MySqlCommand();
+                        cmd = new MySqlCommand("INSERT INTO ford_kelley_thompson_attending (employeeID, meetingID) VALUES (@emp, @m)", conn);
+                        cmd.Parameters.AddWithValue("@emp", "isaiah_thompson6");
+                        cmd.Parameters.AddWithValue("@m", meetingID);
                         break;
                 }
                 if (cmd.ExecuteNonQuery() > 0) //Executes the command
@@ -362,18 +365,20 @@ namespace CSC340GroupProject
                     Console.WriteLine("INSERT statement failed");
                     return false;
                 }
+                conn.Close();
             }
             //Add event to individual tables
             for (int i = 0; i < attending.Length; i++)
             {
                 string sql;
                 MySqlCommand cmd;
+                conn.Open();
                 switch (attending[i])
                 {
                     case "Isaiah Thompson":
                         sql = "INSERT INTO thompsonisaiahevent (employeeID, title, startTime, endTime, date, location, description) VALUES (@emp, @t, @st, @et, @d, @l, @ds)";
                         cmd = new MySqlCommand(sql, conn);
-                        cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
+                        cmd.Parameters.AddWithValue("@emp", 1);
                         cmd.Parameters.AddWithValue("@t", t);
                         cmd.Parameters.AddWithValue("@st", TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null));
                         cmd.Parameters.AddWithValue("@et", TimeSpan.ParseExact(et, "hh\\:mm\\:ss", null));
@@ -382,7 +387,7 @@ namespace CSC340GroupProject
                         cmd.Parameters.AddWithValue("@ds", ds);
                         break;
                     case "John Kelley":
-                        sql = "INSERT INTO kelleyevent(event_name, start_time, end_time, location, description, event_day, employee_ID) VALUES(@t, @st, @et, @l, @ds, @d)";
+                        sql = "INSERT INTO kelleyevents(event_name, start_time, end_time, location, description, event_day, employee_ID) VALUES(@t, @st, @et, @l, @ds, @d, @emp)";
                         cmd = new MySqlCommand(sql, conn);
                         cmd.Parameters.AddWithValue("@t", t);
                         cmd.Parameters.AddWithValue("@st", TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null));
@@ -390,10 +395,10 @@ namespace CSC340GroupProject
                         cmd.Parameters.AddWithValue("@l", l);
                         cmd.Parameters.AddWithValue("@ds", ds);
                         cmd.Parameters.AddWithValue("@d", DateTime.Parse(d));
-                        cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
+                        cmd.Parameters.AddWithValue("@emp", 2);
                         break;
                     case "Emily Ford":
-                        sql = "INSERT INTO fordevents(eventName, startTime, endTime, location, description, eventDay, empUsername) VALUES (@t, @st, @et, @l, @ds, @d)";
+                        sql = "INSERT INTO fordevents(eventName, startTime, endTime, location, description, eventDay, empUsername) VALUES (@t, @st, @et, @l, @ds, @d, @emp)";
                         cmd = new MySqlCommand(sql, conn);
                         cmd.Parameters.AddWithValue("@t", t);
                         cmd.Parameters.AddWithValue("@st", TimeSpan.ParseExact(st, "hh\\:mm\\:ss", null));
@@ -401,7 +406,7 @@ namespace CSC340GroupProject
                         cmd.Parameters.AddWithValue("@l", l);
                         cmd.Parameters.AddWithValue("@ds", ds);
                         cmd.Parameters.AddWithValue("@d", DateTime.Parse(d));
-                        cmd.Parameters.AddWithValue("@emp", currentEmployee.getUsername());
+                        cmd.Parameters.AddWithValue("@emp", "forde");
                         break;
                     default:
                         cmd = new MySqlCommand();
@@ -416,6 +421,7 @@ namespace CSC340GroupProject
                     Console.WriteLine("INSERT statement failed");
                     return false;
                 }
+                conn.Close();
             }
             //After adding the new meeting, it refreshes the meeting list
             retrieveExistingMeetings(d);
@@ -507,32 +513,7 @@ namespace CSC340GroupProject
                     }
                     conn.Close();
                 }
-                //-------Delete all attending instances-------
-                try
-                {
-                    Console.WriteLine("Connecting to MySQL...");
-                    conn.Open();
-                    sql = "DELETE FROM ford_kelley_thompson_attending WHERE meetingID=@m";
-                    MySqlCommand cmd = new MySqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@m", this.id);
-                    if (cmd.ExecuteNonQuery() > 0)
-                    { //Executes the command
-                        Console.WriteLine("DELETE statement successful");
-                    }
-                    else
-                    {
-                        Console.WriteLine("DELETE statement failed");
-                        conn.Close();
-                        return false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                    conn.Close();
-                    return false;
-                }
-                conn.Close();
+                
                 //-------Finally, Delete the meeting itself-------
                 try
                 {

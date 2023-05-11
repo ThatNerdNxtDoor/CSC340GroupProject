@@ -20,13 +20,13 @@ namespace CSC340GroupProject
         public Form3()
         {
             InitializeComponent();
-            selectedDate = DateTime.Now.ToString("yyyy/MM/dd");
+            selectedDate = DateTime.Now.ToString("yyyy-MM-dd");
             attendingMembers = textBox4.Text;
         }
 
         private void button1_Click(object sender, EventArgs e) //Confirm Creation
         {
-            Meeting.createMeeting(textBox1.Text, textBox2.Text, textBox3.Text, selectedDate, textBox5.Text, textBox4.Text, textBox6.Text);
+            Meeting.createMeeting(textBox1.Text, textBox2.Text, textBox3.Text, selectedDate, textBox5.Text, textBox6.Text, textBox4.Text);
             this.Close();
         }
 

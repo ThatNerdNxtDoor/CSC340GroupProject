@@ -172,6 +172,7 @@
             monthCalendar1.Location = new Point(333, 198);
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 13;
+            monthCalendar1.DateChanged += monthCalendar1_DateChanged;
             // 
             // label7
             // 

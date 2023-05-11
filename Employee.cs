@@ -61,7 +61,7 @@ namespace CSC340GroupProject
                 MySqlDataReader myReader = cmd.ExecuteReader();
                 if (myReader.Read())
                 {
-                    Meeting.currentEmployee = new Employee(myReader.GetString(0), myReader.GetString(1), myReader.GetString(2));
+                    Meeting.currentEmployee = new Employee(myReader.GetString(2), myReader.GetString(0), myReader.GetString(1));
                     myReader.Close();
                 }
                 else
